@@ -1,0 +1,7 @@
+#ifndef x@logging_type_id_hash@
+#define x@logging_type_id_hash@
+
+namespace type_id_constants {
+@logging_type_id_body@
+};
+#endif
