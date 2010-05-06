@@ -39,22 +39,35 @@ set (LIBS ${PTHREAD_LIB} ${PROTOC_LIB} ${PROTOBUF_LIB})
 # already released, but not known by my cmake distribution
 set (Boost_ADDITIONAL_VERSIONS "1.42" "1.42.0")
 
-find_package (Boost 1.35.0 REQUIRED)
-include_directories (${Boost_INCLUDE_DIRS})
-
 # set (Boost_USE_STATIC_LIBS   OFF)
 set (Boost_USE_MULTITHREADED ON)
 find_package (Boost 1.35.0
   COMPONENTS program_options signals system REQUIRED)
-
+include_directories (${Boost_INCLUDE_DIRS})
 list (APPEND LIBS ${Boost_LIBRARIES})
 
-find_package (Boost 1.35.0
-  COMPONENTS python REQUIRED)
-find_package (PythonLibs REQUIRED)
+find_package (Boost 1.35.0 COMPONENTS python)
+find_package (PythonLibs)
 
-set (PYTHON_LIBS ${PYTHON_LIBRARIES} ${Boost_LIBRARIES})
-include_directories (${PYTHON_INCLUDE_DIRS})
+macro (eval name)
+   if (${ARGN})
+     set(${name} 1)
+   else ()
+     set(${name} 0)
+   endif ()
+endmacro ()
+
+eval (have_python_support PYTHONLIBS_FOUND AND Boost_FOUND)
+option (PYTHON "compile python modules and install .py files"
+  have_python_support)
+if (PYTHON)
+  if (not have_python_support)
+    message (FATAL_ERROR "python libraries unavailable, cannot do python")
+  endif ()
+
+  set (PYTHON_LIBS ${PYTHON_LIBRARIES} ${Boost_LIBRARIES})
+  include_directories (${PYTHON_INCLUDE_DIRS})
+endif ()
 
 set(proto_generated_sources
   ${CMAKE_BINARY_DIR}/multiplexer/Multiplexer.pb.cc
@@ -185,32 +198,32 @@ configure_file (
   azouk/logging/type_id_constants.h
   )
 
-configure_file (
-  src/logging.type_id.constants.txt
-  azouk/logging/type_id_constants.py COPYONLY
-  )
+if (PYTHON)
+  configure_file (
+    src/logging.type_id.constants.txt
+    azouk/logging/type_id_constants.py COPYONLY
+    )
 
-file (GLOB_RECURSE py_files RELATIVE "${CMAKE_SOURCE_DIR}/src/" "*.py")
-message ("py_files = ${py_files}")
-foreach (py_file ${py_files})
-  configure_file (src/${py_file} ${py_file} COPYONLY)
-endforeach ()
+  file (GLOB_RECURSE py_files RELATIVE "${CMAKE_SOURCE_DIR}/src/" "*.py")
+  message ("py_files = ${py_files}")
+  foreach (py_file ${py_files})
+    configure_file (src/${py_file} ${py_file} COPYONLY)
+  endforeach ()
 
+  add_library(multiplexer/_mxclient MODULE 
+    src/multiplexer/_mxclientmodule.cc
+    ${multiplexer_sources}
+    ${common_sources}
+    ${proto_generated_sources}
+    )
+  target_link_libraries(multiplexer/_mxclient ${LIBS} ${PYTHON_LIBS})
+  set_target_properties(multiplexer/_mxclient PROPERTIES PREFIX "")
 
-
-add_library(multiplexer/_mxclient MODULE 
-  src/multiplexer/_mxclientmodule.cc
-  ${multiplexer_sources}
-  ${common_sources}
-  ${proto_generated_sources}
-  )
-target_link_libraries(multiplexer/_mxclient ${LIBS} ${PYTHON_LIBS})
-set_target_properties(multiplexer/_mxclient PROPERTIES PREFIX "")
-
-add_library(azouk/_logging MODULE 
-  src/azouk/_loggingmodule.cc
-  ${common_sources}
-  ${proto_generated_sources}
-  )
-target_link_libraries(azouk/_logging ${LIBS} ${PYTHON_LIBS})
-set_target_properties(azouk/_logging PROPERTIES PREFIX "")
+  add_library(azouk/_logging MODULE 
+    src/azouk/_loggingmodule.cc
+    ${common_sources}
+    ${proto_generated_sources}
+    )
+  target_link_libraries(azouk/_logging ${LIBS} ${PYTHON_LIBS})
+  set_target_properties(azouk/_logging PROPERTIES PREFIX "")
+endif ()
