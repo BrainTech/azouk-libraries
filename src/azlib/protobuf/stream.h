@@ -68,6 +68,9 @@ namespace azlib {
                     if (!cis.ReadVarint32(&length))
                         return false;
                     if (length < 0)
+/* fixme
+src/azlib/protobuf/stream.h:70: warning: comparison of unsigned expression < 0 is always false
+ */
                         return false;
                     google::protobuf::io::CodedInputStream::Limit limit =
                         cis.PushLimit(length);
