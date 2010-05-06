@@ -185,26 +185,17 @@ configure_file (
   azouk/logging/type_id_constants.h
   )
 
-configure_file(
+configure_file (
   src/logging.type_id.constants.txt
   azouk/logging/type_id_constants.py COPYONLY
   )
 
 file (GLOB_RECURSE py_files RELATIVE "${CMAKE_SOURCE_DIR}/src/" "*.py")
 message ("py_files = ${py_files}")
-set(py_files_in_binary "")
 foreach (py_file ${py_files})
-  add_custom_command (
-    OUTPUT ${CMAKE_BINARY_DIR}/${py_file}
-    DEPENDS src/${py_file}
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            ${CMAKE_SOURCE_DIR}/src/${py_file}
-            ${CMAKE_BINARY_DIR}/${py_file}
-    )
-  list(APPEND py_files_in_binary ${CMAKE_BINARY_DIR}/${py_file})
+  configure_file (src/${py_file} ${py_file} COPYONLY)
 endforeach ()
 
-add_custom_target(python ALL DEPENDS ${py_files_in_binary})
 
 
 add_library(multiplexer/_mxclient MODULE 
