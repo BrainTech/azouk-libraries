@@ -110,8 +110,8 @@ static void test_connection_wrapper(multiplexer::ConnectionWrapper /*wrap*/) {
 }
 
 
-//BOOST_PYTHON_MODULE( _mxclient )
-void init_module__mxclient() {
+BOOST_PYTHON_MODULE( _mxclient )
+{
 
     using namespace boost::python;
     using multiplexer::ConnectionWrapper;

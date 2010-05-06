@@ -27,8 +27,8 @@
 using namespace azlib;
 namespace py = boost::python;
 
-//BOOST_PYTHON_MODULE( _logging )
-void init_module__logging() {
+BOOST_PYTHON_MODULE( _logging )
+{
     using namespace py;
 
     def("should_log", &azlib::logging::impl::should_log);
