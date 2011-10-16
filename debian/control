@@ -1,0 +1,32 @@
+Source: azouk-libraries
+Section: net
+Priority: extra
+Maintainer: Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl>
+Build-Depends: debhelper (>= 8.0.0),
+      gnulib,
+      autoconf,
+      findutils
+Standards-Version: 3.9.2
+Vcs-Git: git://escher.fuw.edu.pl/git/azouk-libraries
+Vcs-Browser: http://escher.fuw.edu.pl/git/azouk-libraries
+
+Package: multiplexer-source
+Architecture: all
+Depends: ${misc:Depends},
+      build-essential,
+      automake,
+      libboost-dev,
+      libboost-date-time-dev,
+      libboost-filesystem-dev,
+      libboost-program-options-dev,
+      libboost-signals-dev,
+      libboost-system-dev,
+      libboost-python-dev,
+      python-dev, python
+Description: multiplexer sources ready for compilation
+ Multiplexer binary depends on the multiplexer.rules file, which is
+ supposed to be modified by the user. So multiplexer must be
+ distributed as sources.
+ .
+ Run /usr/share/multiplexer/configure --help to see available
+ options (RULES is the most important setting).
