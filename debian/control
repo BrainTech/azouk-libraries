@@ -22,7 +22,9 @@ Depends: ${misc:Depends},
       libboost-signals-dev,
       libboost-system-dev,
       libboost-python-dev,
-      python-dev, python
+      python-dev, python,
+      protobuf-compiler (>= 2.4),
+      libprotobuf-dev (>= 2.4)
 Description: multiplexer sources ready for compilation
  Multiplexer binary depends on the multiplexer.rules file, which is
  supposed to be modified by the user. So multiplexer must be
