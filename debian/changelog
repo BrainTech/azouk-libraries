@@ -1,3 +1,9 @@
+azouk-libraries (0.1.1) unstable; urgency=low
+
+  * Externally usable multiplexer code is installed as a shared library.
+
+ -- Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl>  Fri, 21 Oct 2011 23:38:52 +0200
+
 azouk-libraries (0.1) unstable; urgency=low
 
   * Initial packaging. 
