@@ -7,6 +7,8 @@ include $(top_srcdir)/lib/Makefile_protoc
 include $(top_srcdir)/lib/Makefile_v_copy
 
 bin_PROGRAMS = mxcontrol server
+lib_LTLIBRARIES = libmultiplexer.la
+
 AM_CPPFLAGS = $(BOOST_CPPFLAGS) -I$(top_builddir)
 AM_CPPFLAGS += -I$(top_builddir)/lib -I$(top_srcdir)/lib
 
@@ -32,20 +34,19 @@ boost_libs = $(BOOST_PROGRAM_OPTIONS_LIBS) \
 AM_LDFLAGS = $(boost_ldflags)
 
 LDADD = $(top_builddir)/lib/libgnu.la $(boost_libs) \
+	libmultiplexer.la \
         $(GETHOSTNAME_LIB) $(LIBSOCKET) # gethostname replacement from gnulib
 
-common_sources =    azlib/logging/Logging.pb.cc \
-		    azlib/signals.cc \
+common_sources =    azlib/signals.cc \
 		    azlib/random.cc  \
 		    azlib/logging.cc \
-		    azouk/xrelease.h \
 		    azlib/util/Assert.cc \
 		    azlib/util/Exception.cc \
-		    azouk/util/kwargs.cc \
+		    azlib/logging/Logging.pb.cc \
+		    azouk/xrelease.h \
 		    azouk/xrelease.cc \
+		    azouk/util/kwargs.cc \
 		    azlib/logging/Logging.proto
-
-multiplexer_sources = multiplexer/Multiplexer.pb.cc
 
 nobase_include_HEADERS = \
 		    multiplexer/Multiplexer.pb.h \
@@ -65,7 +66,6 @@ nobase_include_HEADERS = \
 		    azlib/encoders/EncodeToRange.h \
 		    azlib/encodings/LittleEndian.h \
 		    azlib/util/Exception.h \
-		    azouk/util/kwargs.h \
 		    azlib/logging/Logging.pb.h \
 		    azlib/logging.h azlib/random.h  azlib/signals.h \
 		    azlib/logging/impl.h \
@@ -84,9 +84,12 @@ nobase_include_HEADERS = \
 		    azlib/util/IntrusiveValue.h \
 		    azlib/util/type_functors.h azlib/util/type_utils.h \
 		    azlib/vector.h \
-		    azlib/initialization.h
+		    azlib/initialization.h \
+		    azouk/util/kwargs.h \
+		    azouk/xrelease.h
 
-multiplexer_other_sources = \
+multiplexer_sources = \
+                    multiplexer/Multiplexer.pb.cc \
 		    multiplexer/BasicClient.cc \
 		    multiplexer/Client.cc \
 		    multiplexer/Server.cc \
@@ -94,7 +97,7 @@ multiplexer_other_sources = \
 		    multiplexer/io/RawMessage.cc \
 		    multiplexer/backend/BaseMultiplexerServer.cc
 
-mxcontrol_SOURCES = mxcontrol.cc $(common_sources) \
+mxcontrol_SOURCES = mxcontrol.cc \
 		    mxcontrol-commands/TasksHolder.cc \
 		    mxcontrol-commands/TasksHolder.h \
 		    mxcontrol-commands/Task.cc \
@@ -105,12 +108,15 @@ mxcontrol_SOURCES = mxcontrol.cc $(common_sources) \
 		    mxcontrol-commands/ReceiveLogs.cc \
 		    mxcontrol-commands/Help.cc \
 		    mxcontrol-commands/Help.h \
-		    $(multiplexer_sources) \
-		    $(multiplexer_other_sources) \
 		    azouk/logging/type_id_constants.h \
 		    logging.type_id.constants.txt
 
-server_SOURCES =    server.cc $(common_sources)
+server_SOURCES =    server.cc
+
+libmultiplexer_la_SOURCES = \
+		    $(common_sources) \
+                    $(multiplexer_sources)
+
 
 BUILT_SOURCES = azlib/logging/Logging.pb.cc azlib/logging/Logging.pb.h \
                 multiplexer/Multiplexer.pb.cc multiplexer/Multiplexer.pb.h \
@@ -120,18 +126,20 @@ BUILT_SOURCES = azlib/logging/Logging.pb.cc azlib/logging/Logging.pb.h \
 if DO_PYTHON
 nobase_python_PYTHON = azlib/__init__.py \
                 azlib/logging/__init__.py \
+                azlib/logging/Logging_pb2.py \
                 azouk/__init__.py \
                 azouk/logging/__init__.py \
                 azouk/logging/collector.py \
                 azouk/logging/django_termcolors.py \
                 azouk/logging/streaming.py \
-                azlib/logging/Logging_pb2.py \
                 azouk/services/__init__.py \
                 azouk/services/collectors/__init__.py \
                 azouk/services/collectors/events.py \
                 azouk/util/Timer.py \
                 azouk/util/__init__.py \
                 azouk/util/decorators.py \
+                azouk/logging/type_id_constants.py \
+                azouk/release.py \
                 multiplexer/__init__.py \
                 multiplexer/clients.py \
                 multiplexer/mxclient.py \
@@ -140,18 +148,13 @@ nobase_python_PYTHON = azlib/__init__.py \
                 multiplexer/test/test_mxclient.py \
                 multiplexer/test/test_simple_connection.py \
                 multiplexer/multiplexer_constants.py \
-                multiplexer/Multiplexer_pb2.py \
-                azouk/logging/type_id_constants.py \
-                azouk/release.py
+                multiplexer/Multiplexer_pb2.py
 
 nobase_pyexec_LTLIBRARIES = azouk/_allinone.la
 azouk__allinone_la_SOURCES = \
                 azouk/_allinonemodule.cc \
                 azouk/_loggingmodule.cc \
-                multiplexer/_mxclientmodule.cc \
-                $(common_sources) \
-                $(multiplexer_other_sources) \
-                $(multiplexer_sources)
+                multiplexer/_mxclientmodule.cc
 
 azouk__allinone_la_LDFLAGS = -avoid-version -module $(BOOST_PYTHON_LDFLAGS)
 azouk__allinone_la_LIBADD = $(LDADD) $(BOOST_PYTHON_LIBS)
@@ -174,6 +177,7 @@ _rules_prefix = $(if $(subst $(RULES),,$(abspath $(RULES))),../,)
 rules = $(_rules_prefix)$(RULES)
 
 multiplexer/multiplexer.constants.h multiplexer/multiplexer_constants.py: $(rules) $(generator)
+	$(AM_V_at)$(MKDIR_P) $(dir $@)
 	$(AM_V_GEN)$(generator) $< $@
 
 $(generator):
