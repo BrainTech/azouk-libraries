@@ -120,6 +120,8 @@ libmultiplexer_la_SOURCES = \
 		    $(common_sources) \
                     $(multiplexer_sources)
 
+libmultiplexer_la_LIBADD = $(boost_libs)
+
 
 BUILT_SOURCES = azlib/logging/Logging.pb.cc azlib/logging/Logging.pb.h \
                 multiplexer/Multiplexer.pb.cc multiplexer/Multiplexer.pb.h \
