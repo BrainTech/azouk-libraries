@@ -115,7 +115,7 @@ namespace multiplexer {
 
     private:
 	void _start_accept() {
-	    Connection::pointer new_connection = Connection::Create(acceptor_.io_service(), this->shared_from_this());
+	    Connection::pointer new_connection = Connection::Create(acceptor_.get_io_service(), this->shared_from_this());
 
 	    acceptor_.async_accept(new_connection->socket(),
 		    boost::bind(&Server::_handle_accept, this, new_connection, boost::asio::placeholders::error)
