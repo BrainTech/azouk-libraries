@@ -17,7 +17,7 @@ Build-Depends: debhelper (>= 8.0.0),
       protobuf-compiler (>= 2.4.1),
       libprotobuf-dev (>= 2.4.1),
       chrpath
-Standards-Version: 3.9.2
+Standards-Version: 3.9.3
 Vcs-Git: git://escher.fuw.edu.pl/git/azouk-libraries
 Vcs-Browser: http://escher.fuw.edu.pl/git/azouk-libraries
 
