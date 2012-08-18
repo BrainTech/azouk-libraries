@@ -9,14 +9,10 @@ export DH_VERBOSE=1
 
 override_dh_auto_configure:
 	./bootstrap.sh
-	mkdir build
-	cd build && ../configure --prefix=/usr RULES=../debian/obci_configs/multiplexer.rules
 
 override_dh_auto_build:
-	# make -C build
 
-override_dh_auto_install:
-	make -C build install DESTDIR=$(PWD)/debian/tmp
-	dh_install
+override_dh_install:
+	dh_install --sourcedir=.
 	find debian/multiplexer-source -name .gitignore -delete , \
                                        -name '*~' -delete

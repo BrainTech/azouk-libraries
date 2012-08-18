@@ -1,4 +1,6 @@
 /files
-/multiplexer-source.debhelper.log
-/multiplexer-source.substvars
-/multiplexer-source/
+/*.debhelper.log
+/*.substvars
+/multiplexer-*/
+/multiplexer-*.*.debhelper
+/tmp/
