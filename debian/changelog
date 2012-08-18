@@ -1,3 +1,9 @@
+azouk-libraries (0.1.2) unstable; urgency=low
+
+  * Bugfixes.
+
+ -- Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl>  Sat, 18 Aug 2012 14:46:13 +0200
+
 azouk-libraries (0.1.1) unstable; urgency=low
 
   * Externally usable multiplexer code is installed as a shared library.
@@ -6,6 +12,6 @@ azouk-libraries (0.1.1) unstable; urgency=low
 
 azouk-libraries (0.1) unstable; urgency=low
 
-  * Initial packaging. 
+  * Initial packaging.
 
  -- Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl>  Sun, 16 Oct 2011 20:58:52 +0200
