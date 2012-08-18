@@ -243,7 +243,10 @@ class BaseMultiplexerServer(MultiplexerPeer):
                                 "exception and w/o any response")
             else:
                 # the rest
-                self.handle_message(self.last_mxmsg)
+		if self._is_private_message(self.last_mxmsg):
+                    self._handle_message(self.last_mxmsg)
+                else:
+                    self.handle_message(self.last_mxmsg)
                 if not self._has_sent_response:
                     log(WARNING, LOWVERBOSITY, text="handle_message() " \
                             "finished w/o exception and w/o any response")
@@ -262,6 +265,18 @@ class BaseMultiplexerServer(MultiplexerPeer):
     def handle_message(self, mxmsg):
         """This method should be overriden in child classes."""
         raise NotImplementedError()
+
+    def _is_private_message(self, mxmsg):
+        """This method may be overriden in subclass to enable
+        handling of private but not mx-specific messages"""
+        return False
+
+    def _handle_message(self, mxmsg):
+        """This method should be overriden in subclass (also: 
+        _is_private_message()). Handling of private but not mx-specific
+        messages."""
+        raise NotImplementedError()
+
 
     def parse_message(self, type, mxmsg=None):
         """parse mxmsg.message with new Protobuf message of type `type'"""

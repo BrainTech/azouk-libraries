@@ -6,7 +6,7 @@ AC_INIT([Azouk Multiplexer], [1.0.0],
         [piotr.findeisen@gmail.com],
         [multiplexer], [http://github.com/findepi/multiplexer])
 AC_CONFIG_AUX_DIR([config])
-AM_INIT_AUTOMAKE(foreign dist-lzma std-options -Wall -Werror -Wno-portability)
+AM_INIT_AUTOMAKE(foreign dist-bzip2 dist-lzma std-options silent-rules subdir-objects tar-pax -Wall -Werror -Wno-portability)
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 AC_CONFIG_SRCDIR([src/mxcontrol.cc])
@@ -25,8 +25,7 @@ AS_IF([test "x$RULES" = "x"],
       [RULES=multiplexer.rules])
 
 # Checks for programs.
-AC_PROG_CXX
-AC_PROG_CC
+AC_PROG_CXX_C_O
 AC_PROG_CPP
 AC_PROG_AWK
 gl_EARLY

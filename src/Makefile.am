@@ -6,7 +6,8 @@
 include $(top_srcdir)/lib/Makefile_protoc
 include $(top_srcdir)/lib/Makefile_v_copy
 
-bin_PROGRAMS = mxcontrol server
+bin_PROGRAMS = mxcontrol
+noinst_PROGRAMS = server
 lib_LTLIBRARIES = libmultiplexer.la
 
 AM_CPPFLAGS = $(BOOST_CPPFLAGS) -I$(top_builddir)
@@ -108,6 +109,8 @@ mxcontrol_SOURCES = mxcontrol.cc \
 		    mxcontrol-commands/ReceiveLogs.cc \
 		    mxcontrol-commands/Help.cc \
 		    mxcontrol-commands/Help.h \
+		    mxcontrol-commands/Version.cc \
+		    mxcontrol-commands/Version.h \
 		    azouk/logging/type_id_constants.h \
 		    logging.type_id.constants.txt
 
@@ -116,6 +119,8 @@ server_SOURCES =    server.cc
 libmultiplexer_la_SOURCES = \
 		    $(common_sources) \
                     $(multiplexer_sources)
+
+libmultiplexer_la_LIBADD = $(boost_libs)
 
 
 BUILT_SOURCES = azlib/logging/Logging.pb.cc azlib/logging/Logging.pb.h \
@@ -168,8 +173,7 @@ BUILT_SOURCES += azlib/logging/Logging_pb2.py \
 endif
 
 # this is used by generate_constants
-EXTRA_DIST = azlib/hash_set.h \
-             multiplexer.rules
+EXTRA_DIST = azlib/hash_set.h
 
 generator = ../tools/generate_constants
 
@@ -224,3 +228,5 @@ azouk/release.py:
             echo "version_hash = \"$(version_hash)\""; \
             echo "version_short_hash = \"$(version_short_hash)\""; \
         } > $@
+
+CLEANFILES = azouk/release.h azouk/release.py
