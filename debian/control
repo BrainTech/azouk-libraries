@@ -1,7 +1,7 @@
 Source: azouk-libraries
 Section: net
 Priority: extra
-Maintainer: Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl>
+Maintainer: Karol Auguštin <karol@augustin.pl>
 Build-Depends: debhelper (>= 8.0.0),
       gnulib,
       autoconf,
