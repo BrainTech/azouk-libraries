@@ -22,3 +22,4 @@ override_dh_install:
 	find debian/multiplexer-source -name .gitignore -print -delete , \
                                        -name '*~' -print -delete
 	cd debian/multiplexer-openbci && chrpath --delete usr/bin/* usr/lib/*.so.* usr/lib/python*/dist-packages/azouk/_allinone.so
+	find debian/multiplexer-openbci \( -name *.pyc -o -name *.pyo \) -delete
