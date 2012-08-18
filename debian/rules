@@ -9,14 +9,15 @@ export DH_VERBOSE=1
 
 override_dh_auto_configure:
 	./bootstrap.sh
-	mkdir build
+	mkdir -p build
 	cd build && ../configure --prefix=/usr RULES=../debian/obci_configs/multiplexer.rules
 
 override_dh_auto_build:
-	# make -C build
+	make -C build
 
-override_dh_auto_install:
+override_dh_install:
 	make -C build install DESTDIR=$(PWD)/debian/tmp
 	dh_install
-	find debian/multiplexer-source -name .gitignore -delete , \
-                                       -name '*~' -delete
+	find debian/multiplexer-source -name .gitignore -print -delete , \
+                                       -name '*~' -print -delete
+	cd debian/multiplexer-openbci && chrpath --delete usr/bin/* usr/lib/*.so.* usr/lib/python*/dist-packages/azouk/_allinone.so

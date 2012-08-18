@@ -35,7 +35,10 @@ Description: multiplexer sources ready for compilation
 
 Package: multiplexer-openbci
 Architecture: amd64 i386
-Depends: ${misc:Depends}
+Depends:
+      ${misc:Depends},
+      ${shlibs:Depends},
+      python-support (>= 0.90)
 Build-Depends:
       build-essential,
       automake,
@@ -48,7 +51,8 @@ Build-Depends:
       libboost-python-dev,
       python-dev, python,
       protobuf-compiler (>= 2.4.1),
-      libprotobuf-dev (>= 2.4.1)
+      libprotobuf-dev (>= 2.4.1),
+      chrpath
 Description: multiplexer compiled for multiplexer.rules used with OpenBCI
  Multiplexer is used to pass messages around.
  .
