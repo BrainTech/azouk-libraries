@@ -44,15 +44,55 @@ Description: multiplexer sources ready for compilation
  Run /usr/share/multiplexer/configure --help to see available
  options (RULES is the most important setting).
 
-Package: multiplexer-openbci
+Package: openbci-multiplexer
 Architecture: amd64 i386
 Depends:
       ${misc:Depends},
-      ${shlibs:Depends},
-      python-support (>= 0.90)
+      ${shlibs:Depends}
 Description: multiplexer compiled for multiplexer.rules used with OpenBCI
  Multiplexer is used to pass messages around.
  .
  Multiplexer binary depends on the multiplexer.rules file, which is
+ supposed to be modified by the user. This version is compiled for
+ a specific version of this file, used with OpenBCI.
+
+Package: openbci-libmultiplexer0
+Architecture: amd64 i386
+Depends:
+      ${misc:Depends},
+      ${shlibs:Depends}
+Description: multiplexer compiled for multiplexer.rules used with OpenBCI
+ Multiplexer is used to pass messages around. This package contains
+ the shared library used by multiplexer and it's clients.
+ .
+ Multiplexer library depends on the multiplexer.rules file, which is
+ supposed to be modified by the user. This version is compiled for
+ a specific version of this file, used with OpenBCI.
+
+Package: openbci-libmultiplexer-dev
+Architecture: amd64 i386
+Depends:
+      ${misc:Depends},
+      openbci-libmultiplexer0
+Description: multiplexer compiled for multiplexer.rules used with OpenBCI
+ Multiplexer is used to pass messages around. This package contains
+ the headers and static version of the library.
+ .
+ Multiplexer headers depend on the multiplexer.rules file, which is
+ supposed to be modified by the user. This version is compiled for
+ a specific version of this file, used with OpenBCI.
+
+Package: openbci-multiplexer-python
+Architecture: amd64 i386
+Depends:
+      ${misc:Depends},
+      ${shlibs:Depends},
+      ${python:Depends},
+      python-support (>= 0.90)
+Description: multiplexer compiled for multiplexer.rules used with OpenBCI
+ Multiplexer is used to pass messages around. This package contains
+ python modules azouk, azlib, and multiplexer.
+ .
+ Multiplexer python files depend on the multiplexer.rules file, which is
  supposed to be modified by the user. This version is compiled for
  a specific version of this file, used with OpenBCI.
