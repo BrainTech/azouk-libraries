@@ -18,8 +18,8 @@ override_dh_auto_build:
 
 override_dh_install:
 	make -C debian/build install DESTDIR=$(PWD)/debian/tmp
+	cd debian/tmp && chrpath --delete usr/bin/* usr/lib/*.so.* usr/lib/python*/dist-packages/azouk/_allinone.so
+	find debian/tmp \( -name *.pyc -o -name *.pyo \) -delete
 	dh_install
 	find debian/multiplexer-source -name .gitignore -print -delete , \
                                        -name '*~' -print -delete
-	cd debian/multiplexer-openbci && chrpath --delete usr/bin/* usr/lib/*.so.* usr/lib/python*/dist-packages/azouk/_allinone.so
-	find debian/multiplexer-openbci \( -name *.pyc -o -name *.pyo \) -delete
