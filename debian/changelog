@@ -1,3 +1,9 @@
+azouk-libraries (0.1.3-1) precise; urgency=low
+
+  * New multiplexer.rules provided.
+
+ -- Karol Auguštin <karolaug@dell>  Sat, 01 Dec 2012 18:01:38 +0100
+
 azouk-libraries (0.1.2) unstable; urgency=low
 
   * Bugfixes.
