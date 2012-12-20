@@ -21,5 +21,8 @@ override_dh_install:
 	cd debian/tmp && chrpath --delete usr/bin/* usr/lib/*.so.* usr/lib/python*/dist-packages/azouk/_allinone.so
 	find debian/tmp \( -name *.pyc -o -name *.pyo \) -delete
 	dh_install
-	find debian/multiplexer-source -name .gitignore -print -delete , \
-                                       -name '*~' -print -delete
+	if [ -e debian/multiplexer-source ] ; then \
+	find debian/multiplexer-source -name .gitignore -print -delete , -name '*~' -print -delete ; \
+	fi
+
+
