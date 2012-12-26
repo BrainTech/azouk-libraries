@@ -65,7 +65,8 @@ Depends:
       ${misc:Depends},
       ${shlibs:Depends},
       ${python:Depends},
-      python-support (>= 0.90)
+      python-support (>= 0.90),
+      python-protobuf
 Description: multiplexer compiled for multiplexer.rules used with OpenBCI
  Multiplexer is used to pass messages around. This package contains
  python modules azouk, azlib, and multiplexer.
