@@ -26,6 +26,7 @@ Architecture: amd64 i386
 Depends:
       ${misc:Depends},
       ${shlibs:Depends}
+Conflicts: openbci-core (<< 1.8.9-5)
 Description: multiplexer compiled for multiplexer.rules used with OpenBCI
  Multiplexer is used to pass messages around.
  .
