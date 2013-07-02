@@ -37,70 +37,70 @@ namespace mxcontrol {
 
     class StreamLogs : public Task {
     public:
-	virtual int run();
-	virtual std::string short_description() const { return "stream logs from stdin to a Log Collector"; }
-	virtual void print_help(std::ostream& out) {
-	    out
-		<< "Read a logging stream as produced by Azouk Logging Library from stdin\n"
-		<< "and send collected records in chunks to a Log Collector.\n"
-		<< "\n"
-		<< _options_description()
-		;
-	}
+        virtual int run();
+        virtual std::string short_description() const { return "stream logs from stdin to a Log Collector"; }
+        virtual void print_help(std::ostream& out) {
+            out
+        	<< "Read a logging stream as produced by Azouk Logging Library from stdin\n"
+        	<< "and send collected records in chunks to a Log Collector.\n"
+        	<< "\n"
+        	<< _options_description()
+        	;
+        }
 
     protected:
-	virtual void _initialize_options_description(po::options_description& generic) {
-	    generic.add_options()
-		("chunksize", po::value(&chunksize_)->default_value(32), "how many LogEntries send at a time; 0 for unlimited")
-		;
-	    _add_multiplexer_client_options(generic);
-	}
+        virtual void _initialize_options_description(po::options_description& generic) {
+            generic.add_options()
+        	("chunksize", po::value(&chunksize_)->default_value(32), "how many LogEntries send at a time; 0 for unlimited")
+        	;
+            _add_multiplexer_client_options(generic);
+        }
 
     private:
-	int chunksize_;
+        int chunksize_;
     };
 
     REGISTER_MXCONTROL_SUBCOMMAND(streamlogs, mxcontrol::StreamLogs);
 
     static inline void send_logs(Client& client, LogEntriesMessage& logs) {
-	MultiplexerMessage mxmsg;
-	mxmsg.set_id(client.random64());
-	mxmsg.set_from(client.instance_id());
-	mxmsg.set_type(types::LOGS_STREAM);
-	mxmsg.set_logging_method(LoggingMethod::CONSOLE);
-	logs.SerializeToString(mxmsg.mutable_message());
-	AZOUK_LOG(DEBUG, HIGHVERBOSITY,
-		MESSAGE("scheduling LOGS_STREAM with " + repr(logs.log_size()) +
-		    " LogEntries (encoded on " + repr(mxmsg.message().size()) + " b)")
-	    );
-	client.schedule_all(mxmsg);
-	client.flush_all();
+        MultiplexerMessage mxmsg;
+        mxmsg.set_id(client.random64());
+        mxmsg.set_from(client.instance_id());
+        mxmsg.set_type(types::LOGS_STREAM);
+        mxmsg.set_logging_method(LoggingMethod::CONSOLE);
+        logs.SerializeToString(mxmsg.mutable_message());
+        AZOUK_LOG(DEBUG, HIGHVERBOSITY,
+        	MESSAGE("scheduling LOGS_STREAM with " + repr(logs.log_size()) +
+        	    " LogEntries (encoded on " + repr(mxmsg.message().size()) + " b)")
+            );
+        client.schedule_all(mxmsg);
+        client.flush_all();
     }
 
     int StreamLogs::run() {
-	using namespace azlib::protobuf;
+        using namespace azlib::protobuf;
 
-	IstreamMessageInputStream fmis(std::cin);
-	multiplexer::LogEntriesMessage logs;
+        IstreamMessageInputStream fmis(std::cin);
+        multiplexer::LogEntriesMessage logs;
 
-	multiplexer::Client& client = _multiplexer_client(peers::LOG_STREAMER);
+        multiplexer::Client& client = _multiplexer_client(peers::LOG_STREAMER);
 
-	while (fmis.read(*logs.add_log())) {
-	    // if chunksize_ == 0 (unlimited) this will be always false
-	    if (logs.log_size() == chunksize_) {
-		send_logs(client, logs);
-		logs.clear_log();
-	    }
-	}
-	logs.mutable_log()->RemoveLast();
+        while (fmis.read(*logs.add_log())) {
+            // if chunksize_ == 0 (unlimited) this will be always false
+            if (logs.log_size() == chunksize_) {
+        	send_logs(client, logs);
+        	logs.clear_log();
+            }
+        }
+        logs.mutable_log()->RemoveLast();
 
-	if (logs.log_size()) {
-	    send_logs(client, logs);
-	}
+        if (logs.log_size()) {
+            send_logs(client, logs);
+        }
 
-	client.flush_all();
+        client.flush_all();
 
-	return 0;
+        return 0;
     }
 
 

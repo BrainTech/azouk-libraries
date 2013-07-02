@@ -30,18 +30,18 @@ namespace azlib {
 
 
     struct AutoSeedingRand48 : public boost::rand48 {
-	AutoSeedingRand48();
+        AutoSeedingRand48();
     };
 
     // Generator
     struct Random64 {
-	typedef boost::uint64_t result_type;
-	result_type operator() () {
-	    return ((boost::uint64_t) a_() << 32) | b_();
-	}
+        typedef boost::uint64_t result_type;
+        result_type operator() () {
+            return ((boost::uint64_t) a_() << 32) | b_();
+        }
 
     private:
-	AutoSeedingRand48 a_, b_;
+        AutoSeedingRand48 a_, b_;
     };
 }; // namespace azlib
 

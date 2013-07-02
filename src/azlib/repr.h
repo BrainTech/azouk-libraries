@@ -33,7 +33,7 @@ namespace azlib {
      * with string quoted
      */
     template <typename T> inline std::string repr(const T& t) {
-	return boost::lexical_cast<std::string>(t);
+        return boost::lexical_cast<std::string>(t);
     }
 
     static inline std::string repr(const std::string& t) {

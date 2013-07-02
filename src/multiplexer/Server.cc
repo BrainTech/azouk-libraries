@@ -19,7 +19,7 @@
 //      Piotr Findeisen <piotr.findeisen at gmail.com>
 //
 
-#include "config.h"
+#include <config.h>
 #include <boost/asio/placeholders.hpp>
 #include <boost/foreach.hpp>
 #include <boost/asio/ip/tcp.hpp>
@@ -39,11 +39,11 @@ Server::Server(boost::asio::io_service& io_service, const std::string& host, uns
       // TODO support for name resolving
     , acceptor_(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(host), port))
     //, acceptor_(io_service, asio::ip::tcp::endpoint(
-		////asio::ip::address_v4(
-		    //*asio::ip::tcp::resolver(io_service).resolve(asio::ip::tcp::resolver_query(host))
-		    ////)
-		    //,
-		//port))
+        	////asio::ip::address_v4(
+        	    //*asio::ip::tcp::resolver(io_service).resolve(asio::ip::tcp::resolver_query(host))
+        	    ////)
+        	    //,
+        	//port))
 {
 }
 
@@ -51,11 +51,11 @@ void Server::start() { _start_accept(); }
 
 void Server::handle_message(Connection::pointer conn, boost::shared_ptr<const RawMessage> raw, boost::shared_ptr<MultiplexerMessage> msg) {
     if (msg->from() == instance_id_) {
-	AZOUK_LOG(LOG_ERROR, MEDIUMVERBOSITY, CTX("multiplexer.server") MESSAGE("received message from self")
-		FLOW(msg->workflow())
-		SKIPFILEIF(!(msg->logging_method() & multiplexer::LoggingMethod::FILE))
-	    );
-	return;
+        AZOUK_LOG(LOG_ERROR, MEDIUMVERBOSITY, CTX("multiplexer.server") MESSAGE("received message from self")
+        	FLOW(msg->workflow())
+        	SKIPFILEIF(!(msg->logging_method() & multiplexer::LoggingMethod::FILE))
+            );
+        return;
     }
     return _handle_message(conn, *msg, raw);
 }

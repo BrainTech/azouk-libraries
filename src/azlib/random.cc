@@ -21,6 +21,7 @@
 
 
 #include <sys/types.h>
+#include <config.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>

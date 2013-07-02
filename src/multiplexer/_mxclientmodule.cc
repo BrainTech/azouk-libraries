@@ -19,7 +19,7 @@
 //      Piotr Findeisen <piotr.findeisen at gmail.com>
 //
 
-#include "config.h"
+#include <config.h>
 #include <boost/python.hpp>
 #include "azlib/util/type_utils.h"
 #include "multiplexer/Client.h"
@@ -40,35 +40,35 @@ namespace multiplexer {
 
     public:
 
-	PythonClient(boost::asio::io_service& io_service, boost::uint32_t client_type)
-	    : Client(io_service, client_type)
-	{
-	}
+        PythonClient(boost::asio::io_service& io_service, boost::uint32_t client_type)
+            : Client(io_service, client_type)
+        {
+        }
 
-	py::object read_message(float timeout) {
-	    BOOST_STATIC_ASSERT((boost::is_same<
+        py::object read_message(float timeout) {
+            BOOST_STATIC_ASSERT((boost::is_same<
                             BasicClient::IncomingMessagesBuffer
                                 ::value_type::second_type,
                             ConnectionWrapper>::value));
-	    BasicClient::IncomingMessagesBuffer::value_type next =
+            BasicClient::IncomingMessagesBuffer::value_type next =
                 Client::read_raw_message(timeout);
-	    py::tuple t = py::make_tuple((std::string)next.first->get_message(),
+            py::tuple t = py::make_tuple((std::string)next.first->get_message(),
                     next.second);
 
-	    return t;
-	}
+            return t;
+        }
 
-	ScheduledMessageTracker schedule_one(std::string message) {
-	    return Client::schedule_one(&message);
-	}
+        ScheduledMessageTracker schedule_one(std::string message) {
+            return Client::schedule_one(&message);
+        }
         ScheduledMessageTracker schedule_one(std::string message,
                 ConnectionWrapper w, float timeout) {
-	    return Client::schedule_one(&message, w, timeout);
-	}
+            return Client::schedule_one(&message, w, timeout);
+        }
 
-	unsigned int schedule_all(std::string message) {
-	    return Client::schedule_all(&message);
-	}
+        unsigned int schedule_all(std::string message) {
+            return Client::schedule_all(&message);
+        }
 
     private:
     };
@@ -98,9 +98,9 @@ struct ExceptionTranslator {
     void operator() (const multiplexer::Client::exc& /*e*/) const { \
         AZOUK_LOG(DEBUG, HIGHVERBOSITY, CTX("_mxclient") \
                 MESSAGE("converting an exception of type " #exc)); \
-	Assert(_MxClientExceptionDefinitions::exc.ptr()); \
-	Assert(_MxClientExceptionDefinitions::exc.ptr() != Py_None); \
-	PyErr_SetNone(_MxClientExceptionDefinitions::exc.ptr()); \
+        Assert(_MxClientExceptionDefinitions::exc.ptr()); \
+        Assert(_MxClientExceptionDefinitions::exc.ptr() != Py_None); \
+        PyErr_SetNone(_MxClientExceptionDefinitions::exc.ptr()); \
     }
     EXPORTED_EXCEPTIONS(EXPORTED_EXCEPTION_HANDLER);
 #undef EXPORTED_EXCEPTION_HANDLER
@@ -120,7 +120,7 @@ void init_module__mxclient() {
     using multiplexer::PythonClient;
 
     class_<Client::NotConnected>("Client_NotConnected")
-	;
+        ;
 
     // export the Exceptions
     // TODO py::borrowed???
@@ -130,10 +130,10 @@ void init_module__mxclient() {
     ExceptionTranslator translator;
 #define create_exported_exception(exc) \
     _MxClientExceptionDefinitions::exc = py::object(py::borrowed( \
-		PyErr_NewException((char*) "azouk._allinone." #exc, \
+        	PyErr_NewException((char*) "azouk._allinone." #exc, \
                     _MxClientExceptionDefinitions \
                         ::MultiplexerClientError.ptr(), NULL) \
-		)); \
+        	)); \
     scope().attr(#exc) = _MxClientExceptionDefinitions::exc; \
     register_exception_translator<Client::exc>(translator);\
     //
@@ -141,78 +141,78 @@ void init_module__mxclient() {
 #undef create_exported_exception
 
     class_<boost::shared_ptr<boost::asio::io_service> >("Asio_IoService")
-	.def("__init__", make_constructor(create_new_asio_ioservice))
-        .def("run",	(std::size_t (boost::asio::io_service::*)())
+        .def("__init__", make_constructor(create_new_asio_ioservice))
+        .def("run",        (std::size_t (boost::asio::io_service::*)())
                             &boost::asio::io_service::run)
         .def("run_one", (std::size_t (boost::asio::io_service::*)())
                             &boost::asio::io_service::run_one)
-	.def("stop",	(void (boost::asio::io_service::*)()) &boost::asio::io_service::stop)
-	.def("reset",	(void (boost::asio::io_service::*)()) &boost::asio::io_service::reset)
-	;
+        .def("stop",	(void (boost::asio::io_service::*)()) &boost::asio::io_service::stop)
+        .def("reset",	(void (boost::asio::io_service::*)()) &boost::asio::io_service::reset)
+        ;
 
     typedef PythonClient::ScheduledMessageTracker ScheduledMessageTracker;
     class_<ScheduledMessageTracker>("ScheduledMessageTracker", no_init)
-	.def("__nonzero__", &ScheduledMessageTracker::operator bool)
-	.def("in_queue",    &ScheduledMessageTracker::in_queue)
-	.def("is_sent",	    &ScheduledMessageTracker::is_sent)
-	.def("is_lost",	    &ScheduledMessageTracker::is_lost)
-	;
+        .def("__nonzero__", &ScheduledMessageTracker::operator bool)
+        .def("in_queue",    &ScheduledMessageTracker::in_queue)
+        .def("is_sent",	    &ScheduledMessageTracker::is_sent)
+        .def("is_lost",	    &ScheduledMessageTracker::is_lost)
+        ;
 
     class_<ConnectionWrapper>("ConnectionWrapper", no_init)
-	.def("__nonzero__", &ConnectionWrapper::operator bool)
-	;
+        .def("__nonzero__", &ConnectionWrapper::operator bool)
+        ;
 
     def("test_connection_wrapper", test_connection_wrapper);
 
     class_<PythonClient/*, boost::shared_ptr<PythonClient>*/ >(
-	    "Client",
-	    "Client object providing Multiplexer services for python.\n"
-	    "Client.__init__(self, Asio_IoService, int) ->\n"
-	    "    construct a new object bound to the given Asio_IoService\n"
-	    "    of specified type\n",
-	    init<boost::asio::io_service&, boost::uint32_t>()
-	    )
+            "Client",
+            "Client object providing Multiplexer services for python.\n"
+            "Client.__init__(self, Asio_IoService, int) ->\n"
+            "    construct a new object bound to the given Asio_IoService\n"
+            "    of specified type\n",
+            init<boost::asio::io_service&, boost::uint32_t>()
+            )
 
-	.def("_get_instance_id",    &PythonClient::instance_id)
+        .def("_get_instance_id",    &PythonClient::instance_id)
 
-	.add_property("multiplexer_password",
-		make_function(&PythonClient::multiplexer_password,
+        .add_property("multiplexer_password",
+        	make_function(&PythonClient::multiplexer_password,
                     return_value_policy<copy_const_reference>()),
-		make_function((void (PythonClient::*)(const std::string&))
+        	make_function((void (PythonClient::*)(const std::string&))
                     &PythonClient::set_multiplexer_password))
 
-	.def("async_connect",	    (ConnectionWrapper (PythonClient::*)
+        .def("async_connect",	    (ConnectionWrapper (PythonClient::*)
                                         (const std::string&, boost::uint16_t))
                                             &PythonClient::async_connect)
 
-	.def("connect",		    (ConnectionWrapper (PythonClient::*)
+        .def("connect",		    (ConnectionWrapper (PythonClient::*)
                                         (const std::string&, boost::uint16_t,
                                          float)) &PythonClient::connect)
 
-	.def("wait_for_connection", &PythonClient::wait_for_connection)
-	.def("connections_count",   &PythonClient::connections_count)
-	.def("shutdown",	    &PythonClient::shutdown)
+        .def("wait_for_connection", &PythonClient::wait_for_connection)
+        .def("connections_count",   &PythonClient::connections_count)
+        .def("shutdown",	    &PythonClient::shutdown)
 
-	.def("read_message",	    &PythonClient::read_message)
+        .def("read_message",	    &PythonClient::read_message)
 
-	.def("schedule_one",	    (ScheduledMessageTracker (PythonClient::*)
+        .def("schedule_one",	    (ScheduledMessageTracker (PythonClient::*)
                                         (std::string))
                                             &PythonClient::schedule_one)
 
-	.def("schedule_one",	    (ScheduledMessageTracker (PythonClient::*)
+        .def("schedule_one",	    (ScheduledMessageTracker (PythonClient::*)
                                         (std::string, ConnectionWrapper, float))
                                             &PythonClient::schedule_one)
 
-	.def("schedule_all",	    &PythonClient::schedule_all)
+        .def("schedule_all",	    &PythonClient::schedule_all)
 
-	.def("flush",		    (void (PythonClient::*)
+        .def("flush",		    (void (PythonClient::*)
                                         (ScheduledMessageTracker, float) const)
                                             &PythonClient::flush)
 
-	.def("flush_all",	    &PythonClient::flush_all)
+        .def("flush_all",	    &PythonClient::flush_all)
 
-	.def("random",		    &PythonClient::random64)
-	;
+        .def("random",		    &PythonClient::random64)
+        ;
 
 #define EXPORT_CONSTANT(name) (scope().attr(#name) = name)
     EXPORT_CONSTANT(DEFAULT_INCOMING_QUEUE_MAX_SIZE);

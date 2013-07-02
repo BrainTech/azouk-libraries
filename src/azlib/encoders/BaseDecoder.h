@@ -25,17 +25,17 @@
 namespace azlib {
     namespace encoders {
 
-	template <typename Base, template <typename> class Encoding>
-	struct BaseDecoder {
-	protected:
-	    BaseDecoder() {}
+        template <typename Base, template <typename> class Encoding>
+        struct BaseDecoder {
+        protected:
+            BaseDecoder() {}
 
-	public:
-	    template <typename T>
-	    void operator() (T& t) {
-		Encoding<T>::decode(*static_cast<Base*>(this), t);
-	    }
-	};
+        public:
+            template <typename T>
+            void operator() (T& t) {
+                Encoding<T>::decode(*static_cast<Base*>(this), t);
+            }
+        };
 
     };
 

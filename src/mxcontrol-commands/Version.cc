@@ -29,9 +29,9 @@
 
 namespace mxcontrol {
     int Version::run() {
-	std::cout
-	    << program_name << " " << azouk::release::version << "\n";
-	return 0;
+        std::cout
+            << program_name << " " << azouk::release::version << "\n";
+        return 0;
     }
 };
 

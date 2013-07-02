@@ -28,31 +28,31 @@ namespace mxcontrol {
 
     class Help : public Task {
     public:
-	virtual int run();
-	virtual std::string short_description() const { return "get some help"; }
-	virtual std::string short_synopsis(const std::string&) const { return "[subcommand]"; }
-	virtual void print_help(std::ostream& out) const {
-	    out << "Get a list of available commands.\n";
-	    out << "If subcommand is given, get subcommand options and usage information insted.\n";
-	}
+        virtual int run();
+        virtual std::string short_description() const { return "get some help"; }
+        virtual std::string short_synopsis(const std::string&) const { return "[subcommand]"; }
+        virtual void print_help(std::ostream& out) const {
+            out << "Get a list of available commands.\n";
+            out << "If subcommand is given, get subcommand options and usage information insted.\n";
+        }
 
     protected:
-	virtual void _initialize_hidden_options_description(po::options_description& hidden) {
-	    hidden.add_options()
-		("_subcommand_", po::value(&subcommand_))
-		;
-	}
-	virtual void _initialize_positional_options_description(po::positional_options_description& positional) {
-	    positional.add("_subcommand_", 1);
-	}
+        virtual void _initialize_hidden_options_description(po::options_description& hidden) {
+            hidden.add_options()
+                ("_subcommand_", po::value(&subcommand_))
+                ;
+        }
+        virtual void _initialize_positional_options_description(po::positional_options_description& positional) {
+            positional.add("_subcommand_", 1);
+        }
 
     private:
-	std::string subcommand_;
+        std::string subcommand_;
     };
 
     extern bool show_help_forced; // If help was requested, it should go out on stdout.
-				  // If it printed because of an error, it should go to stderr.
-				  // show_help_forced means the second.
+                		  // If it printed because of an error, it should go to stderr.
+                		  // show_help_forced means the second.
 };
 
 #endif

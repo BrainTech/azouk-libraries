@@ -25,7 +25,7 @@
 namespace azlib {
     template <typename T>
     struct IdentityTypeFunctor {
-	typedef T type;
+        typedef T type;
     };
 };
 

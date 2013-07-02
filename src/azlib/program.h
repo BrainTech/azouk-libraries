@@ -42,21 +42,21 @@ int main(int argc, char** argv) {
     azlib::logging::init_process_context_all_defaults();
 
     try {
-	get_exit_signal()(AzoukMain(argc, argv));
-	AssertMsg(false, "exit_signal() returned");
+        get_exit_signal()(AzoukMain(argc, argv));
+        AssertMsg(false, "exit_signal() returned");
 
     } catch (azlib::Exception& e) {
-	cerr
-	    << azlib::type_utils::type_name(e) << " in " << e.file() << ":" << e.line() << " (" << e.function() << ")\n"
-	    << "    " << e.what() << endl;
-	get_exit_signal()(1);
-	AssertMsg(false, "exit_signal() returned");
+        cerr
+            << azlib::type_utils::type_name(e) << " in " << e.file() << ":" << e.line() << " (" << e.function() << ")\n"
+            << "    " << e.what() << endl;
+        get_exit_signal()(1);
+        AssertMsg(false, "exit_signal() returned");
 
     } catch (std::exception& e) {
-	cerr
-	    << azlib::type_utils::type_name(e) << ": " << e.what() << "\n";
-	get_exit_signal()(1);
-	AssertMsg(false, "exit_signal() returned");
+        cerr
+            << azlib::type_utils::type_name(e) << ": " << e.what() << "\n";
+        get_exit_signal()(1);
+        AssertMsg(false, "exit_signal() returned");
     }
 }
 

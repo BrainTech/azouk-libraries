@@ -28,7 +28,7 @@
 
 # /*
 #  * AZOUK_CREATE_MESSAGE__INVOKE_SETTER
-#  *	used by AZOUK_CREATE_MESSAGE
+#  *        used by AZOUK_CREATE_MESSAGE
 #  */
 #define AZOUK_CREATE_MESSAGE__INVOKE_SETTER(r, msg, elem) (msg).elem;
 

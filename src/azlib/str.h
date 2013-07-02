@@ -32,7 +32,7 @@ namespace azlib {
      * str(t) -> lexical_cast<std::string>(t)
      */
     template <typename T> inline std::string str(const T& t) {
-	return boost::lexical_cast<std::string>(t);
+        return boost::lexical_cast<std::string>(t);
     }
 
 };

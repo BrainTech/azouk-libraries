@@ -38,43 +38,43 @@
 
 # /*
 #  * AZOUK_LOG(level, verbosity, tokens)
-#  *	Emit log message with proper parameters runnin as little code as
+#  *        Emit log message with proper parameters runnin as little code as
 #  *    possible it the message finally wounldn't be emitted.
 #  *
-#  *	`tokens' is a non empty list of:
+#  *        `tokens' is a non empty list of:
 #  *
-#  *	    DEFAULT				no-op
+#  *            DEFAULT        			no-op
 #  *
-#  *	    FLOW(flow)				add workflow information
+#  *            FLOW(flow)        			add workflow information
 #  *
-#  *	    MESSAGE(text)				add human readable textual
+#  *            MESSAGE(text)        			add human readable textual
 #  *                                            information
 #  *
-#  *	    DATA(type_id, type, setters)	add data_type(type_id) information and generate inner data msg using setters
-#  *						AZOUK_CREATE_MESSAGE(type, x, setters) must be valid
+#  *            DATA(type_id, type, setters)        add data_type(type_id) information and generate inner data msg using setters
+#  *                				AZOUK_CREATE_MESSAGE(type, x, setters) must be valid
 #  *
-#  *	    CTX(context)			add context to process_context
+#  *            CTX(context)        		add context to process_context
 #  *
-#  *	    CONTEXT(context)			override process_context with context
+#  *            CONTEXT(context)        		override process_context with context
 #  *
-#  *	    SKIPFILEIF(b)			don't emit log to logging stream if `b'
+#  *            SKIPFILEIF(b)        		don't emit log to logging stream if `b'
 #  *
 #  *
-#  *	Examples (see azlib/repr.h for information how to shorten lexical_cast):
+#  *        Examples (see azlib/repr.h for information how to shorten lexical_cast):
 #  *
-#  *	    AZOUK_LOG(DEBUG, VERBOSE, CONTEXT("tarantula.multiplexer"));
+#  *            AZOUK_LOG(DEBUG, VERBOSE, CONTEXT("tarantula.multiplexer"));
 #  *
-#  *	    AZOUK_LOG(DEBUG, VERBOSE, CTX("multiplexer") FLOW(mxmsg.workflow())
-#  *		    MESSAGE("received a message with id " +
+#  *            AZOUK_LOG(DEBUG, VERBOSE, CTX("multiplexer") FLOW(mxmsg.workflow())
+#  *                    MESSAGE("received a message with id " +
 #  *                        boost::lexical_cast<std::string>(mxmsg.id))
-#  *		);
+#  *                );
 #  *
-#  *	    AZOUK_LOG(DEBUG, VERBOSE, CONTEXT("tarantula.multiplexer")
+#  *            AZOUK_LOG(DEBUG, VERBOSE, CONTEXT("tarantula.multiplexer")
 #  *                FLOW(mxmsg.workflow())
-#  *		    DATA(MALFORMED_MESSAGE_SO_SHUTDOWN, PeerCharacteristics,
+#  *                    DATA(MALFORMED_MESSAGE_SO_SHUTDOWN, PeerCharacteristics,
 #  *                    (set_peer_id(conn->peer_id()))
 #  *                        (set_peer_type(conn->peer_type())))
-#  *		);
+#  *                );
 #  *
 #  */
 #define AZOUK_LOG(tokens...) __AZOUK_LOG(AZOUK_UNIQUE_NAME(_log_msg_), \
@@ -95,9 +95,9 @@
 #  * AZOUK_ENTER(tokens...)
 #  *    Logging macro used when entering a function.
 #  *
-#  *	`tokens' is a non empty list of:
+#  *        `tokens' is a non empty list of:
 #  *
-#  *	    DEFAULT				no-op
+#  *            DEFAULT        			no-op
 #  *
 #  *        LEVEL(level)                        set logging level of the
 #  *                                            underlying AZOUK_LOG call
@@ -105,12 +105,12 @@
 #  *        VERBOSITY(verbosity)                set logging verbosity of the
 #  *                                            underlying AZOUK_LOG call
 #  *
-#  *	    CTX(context)			add context to process_context
+#  *            CTX(context)        		add context to process_context
 #  *
-#  *	    CONTEXT(context)			override process_context with
+#  *            CONTEXT(context)        		override process_context with
 #  *                                            `context`
 #  *
-#  *	    FLOW(flow)				add workflow information
+#  *            FLOW(flow)        			add workflow information
 #  *
 #  */
 #define AZOUK_ENTER(tokens...)  __AZOUK_ENTER(tokens)
@@ -124,124 +124,124 @@
 namespace azlib {
     namespace logging {
 
-	extern bool module_is_initialized;
+        extern bool module_is_initialized;
 
-	namespace consts {
-	    /*
-	     * logging levels
-	     */
+        namespace consts {
+            /*
+             * logging levels
+             */
 #define AZOUK_LOGGING_LEVELS_SEQ \
-	    ((DEBUG, 1)) \
-	    ((INFO, 2)) \
-	    ((OK, 3)) \
-	    ((WARNING, 4)) \
-	    ((LOG_ERROR, 5)) \
-	    ((CRITICAL, 6)) \
-	    /**/
+            ((DEBUG, 1)) \
+            ((INFO, 2)) \
+            ((OK, 3)) \
+            ((WARNING, 4)) \
+            ((LOG_ERROR, 5)) \
+            ((CRITICAL, 6)) \
+            /**/
 
-	    const static unsigned int MAX_LEVEL = __AZOUK_LOGGING_MAX_LEVEL();
+            const static unsigned int MAX_LEVEL = __AZOUK_LOGGING_MAX_LEVEL();
 
-	    /*
-	     * verbosities
-	     */
+            /*
+             * verbosities
+             */
 #define AZOUK_LOGGING_VERBOSITIES_SEQ \
-	    /* allows to completely disable logging of specific LEVEL */ \
-	    /* with set_maximal_logging_verbosity(LEVEL, ZEROVERBOSITY) */ \
-	    ((ZEROVERBOSITY, 0)) \
-	    \
-	    /* messages that appear very rarely */ \
-	    ((LOWVERBOSITY, 1)) \
-	    \
-	    /* messages that appear sometimes */ \
-	    ((MEDIUMVERBOSITY, 2)) \
-	    \
-	    /* messages that are usually quite numerous */ \
-	    ((HIGHVERBOSITY, 3)) \
-	    \
-	    /* messages that can flood you */ \
-	    ((CHATTERBOX, 4)) \
-	    /**/
+            /* allows to completely disable logging of specific LEVEL */ \
+            /* with set_maximal_logging_verbosity(LEVEL, ZEROVERBOSITY) */ \
+            ((ZEROVERBOSITY, 0)) \
+            \
+            /* messages that appear very rarely */ \
+            ((LOWVERBOSITY, 1)) \
+            \
+            /* messages that appear sometimes */ \
+            ((MEDIUMVERBOSITY, 2)) \
+            \
+            /* messages that are usually quite numerous */ \
+            ((HIGHVERBOSITY, 3)) \
+            \
+            /* messages that can flood you */ \
+            ((CHATTERBOX, 4)) \
+            /**/
 #define AZOUK_LOGGING_DEFAULT_VERBOSITY() \
             (::azlib::logging::consts::LOWVERBOSITY)
 
-	    const static unsigned int MAX_VERBOSITY =
+            const static unsigned int MAX_VERBOSITY =
                 __AZOUK_LOGGING_MAX_VERBOSITY();
 
-	    /*
-	     * logging_level_name<L>::name()
-	     *	    Returns the level name known at compile time.
-	     *	    Checks that the level L really is defined.
-	     */
-	    template <int> struct logging_level_name;
+            /*
+             * logging_level_name<L>::name()
+             *            Returns the level name known at compile time.
+             *            Checks that the level L really is defined.
+             */
+            template <int> struct logging_level_name;
 
-	    /*
-	     * logging_get_level_name(level)
-	     *	    Returns the level name not known at compile time.
-	     */
-	    static inline const char* logging_get_level_name(
+            /*
+             * logging_get_level_name(level)
+             *            Returns the level name not known at compile time.
+             */
+            static inline const char* logging_get_level_name(
                     const unsigned int level) AZOUK_ATTRIBUTE_ALWAYS_INLINE;
 
-	    /*
-	     * logging_verbosity_name<L>::name()
-	     *	    Returns the verbosity name known at compile time.
-	     *	    Checks that the verbosity L really is defined.
-	     */
-	    template <int> struct logging_verbosity_name;
+            /*
+             * logging_verbosity_name<L>::name()
+             *            Returns the verbosity name known at compile time.
+             *            Checks that the verbosity L really is defined.
+             */
+            template <int> struct logging_verbosity_name;
 
-	    /*
-	     * logging_get_verbosity_name(verbosity)
-	     *	    Returns the verbosity name not known at compile time.
-	     */
-	    static inline const char* logging_get_verbosity_name(
+            /*
+             * logging_get_verbosity_name(verbosity)
+             *            Returns the verbosity name not known at compile time.
+             */
+            static inline const char* logging_get_verbosity_name(
                     const unsigned int verbosity) AZOUK_ATTRIBUTE_ALWAYS_INLINE;
 
-	}; // namespace consts
+        }; // namespace consts
 
-	/*
-	 * process_context()
-	 *	    Get context of the whole process as required for
-         *	    AZOUK_LOG(., ., context).
-	 */
-	static inline const std::string& process_context()
+        /*
+         * process_context()
+         *            Get context of the whole process as required for
+         *            AZOUK_LOG(., ., context).
+         */
+        static inline const std::string& process_context()
             AZOUK_ATTRIBUTE_ALWAYS_INLINE;
 
-	/*
-	 * set_maximal_logging_verbosity(for_level, minimal_verbosity)
-         *	Define what is the minimal verbosity of LogEntries with level
-         *	for_level, which are emitted.
-	 */
-	void set_maximal_logging_verbosity(const unsigned int for_level,
+        /*
+         * set_maximal_logging_verbosity(for_level, minimal_verbosity)
+         *        Define what is the minimal verbosity of LogEntries with level
+         *        for_level, which are emitted.
+         */
+        void set_maximal_logging_verbosity(const unsigned int for_level,
                 const unsigned int minimal_verbosity);
 
-	/*
-	 * set_logging_fd
-	 *	Set to which FD logging stream is sent.
-	 */
-	void set_logging_fd(unsigned int logging_fd,
+        /*
+         * set_logging_fd
+         *        Set to which FD logging stream is sent.
+         */
+        void set_logging_fd(unsigned int logging_fd,
                 bool close_on_delete = false, bool log_the_fact = true);
 
-	void set_logging_file(const std::string& file);
+        void set_logging_file(const std::string& file);
 
-	boost::uint64_t create_log_id();
+        boost::uint64_t create_log_id();
 
-	/*
-	 * set_process_name(name)
-	 *	    Set the name of the process. Removes directory part.
-	 */
-	static inline void set_process_name(const std::string name);
+        /*
+         * set_process_name(name)
+         *            Set the name of the process. Removes directory part.
+         */
+        static inline void set_process_name(const std::string name);
 
-	/*
-	 * init_process_context_all_defaults()
-	 *	    Do something. Call from main().
-	 */
-	static inline void init_process_context_all_defaults();
+        /*
+         * init_process_context_all_defaults()
+         *            Do something. Call from main().
+         */
+        static inline void init_process_context_all_defaults();
 
 
-	static inline const std::string& process_context();
-	static inline void set_process_context(const std::string& s);
-	void set_process_context_program_name(const std::string& s);
+        static inline const std::string& process_context();
+        static inline void set_process_context(const std::string& s);
+        void set_process_context_program_name(const std::string& s);
 
-	void die(const std::string& text);
+        void die(const std::string& text);
 
     }; // namespace logging
 };

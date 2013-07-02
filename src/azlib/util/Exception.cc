@@ -29,9 +29,9 @@ static bool _abort_on_exception = false;
 
 namespace {
     struct _AbortOnExceptionInitializer {
-	_AbortOnExceptionInitializer() {
-	    _abort_on_exception = getenv("ABORT_ON_EXCEPTION") != NULL;
-	}
+        _AbortOnExceptionInitializer() {
+            _abort_on_exception = getenv("ABORT_ON_EXCEPTION") != NULL;
+        }
     };
     static _AbortOnExceptionInitializer _abort_on_exception_initializer;
 }
@@ -53,7 +53,7 @@ Exception::Exception(const std::string explanation, const std::string& file, int
     , line_(line)
 {
     if (_abort_on_exception)
-	abort();
+        abort();
 }
 
 Exception::~Exception() throw() {

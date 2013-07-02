@@ -52,10 +52,10 @@
 namespace azlib {
 
     struct AssertionError : public Exception {
-	public:
-	    AssertionError(const std::string& file, unsigned int line,
+        public:
+            AssertionError(const std::string& file, unsigned int line,
                     const std::string& function,
-		    const std::string& question, const std::string& explanation)
+                    const std::string& question, const std::string& explanation)
                 throw();
     };
 

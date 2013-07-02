@@ -20,7 +20,7 @@
 //
 
 
-#include "config.h"
+#include <config.h>
 #include "multiplexer/Multiplexer.pb.h"
 #include "Client.h"
 

@@ -19,7 +19,7 @@
 //      Piotr Findeisen <piotr.findeisen at gmail.com>
 //
 
-
+#include <config.h>
 #include <boost/python.hpp>
 #include "azlib/util/type_utils.h"
 #include "azlib/logging.h"
@@ -51,25 +51,25 @@ void init_module__logging() {
     using logging::LogEntry;
     class_<LogEntry>("LogEntry")
 #define export_a_method(class, name) \
-	.def(BOOST_PP_STRINGIZE(name), &class::name)
+        .def(BOOST_PP_STRINGIZE(name), &class::name)
 #define export_field_ctl(class, name) \
-	export_a_method(class, BOOST_PP_CAT(has_, name)) \
-	export_a_method(class, BOOST_PP_CAT(clear_, name))
+        export_a_method(class, BOOST_PP_CAT(has_, name)) \
+        export_a_method(class, BOOST_PP_CAT(clear_, name))
 
 #define export_num_field(r, class, name) \
-	export_field_ctl(class, name) \
-	.add_property(BOOST_PP_STRINGIZE(name), &class::name, &class::BOOST_PP_CAT(set_, name))
+        export_field_ctl(class, name) \
+        .add_property(BOOST_PP_STRINGIZE(name), &class::name, &class::BOOST_PP_CAT(set_, name))
 
 #define export_str_field(r, class, name) \
-	export_field_ctl(class, name) \
-	.add_property(BOOST_PP_STRINGIZE(name), \
-		make_function(&class::name, return_value_policy<copy_const_reference>()), \
-		make_function((void (class::*)(const std::string&)) &class::BOOST_PP_CAT(set_, name)))
+        export_field_ctl(class, name) \
+        .add_property(BOOST_PP_STRINGIZE(name), \
+        	make_function(&class::name, return_value_policy<copy_const_reference>()), \
+        	make_function((void (class::*)(const std::string&)) &class::BOOST_PP_CAT(set_, name)))
 
         BOOST_PP_SEQ_FOR_EACH(export_num_field, LogEntry, (id) (timestamp)
                 (level) (verbosity) (data_type) (source_line) (pid))
         BOOST_PP_SEQ_FOR_EACH(export_str_field, LogEntry, (context) (text)
                 (workflow) (data_class) (data) (source_file)
                 (compilation_datetime) (version))
-	;
+        ;
 }

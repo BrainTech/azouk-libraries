@@ -46,8 +46,8 @@ namespace multiplexer {
 
     /**
      * @class Client
-     *	    wrapper around BasicClient
-     *	    that will have its counterpart written in Python (boost::python)
+     *            wrapper around BasicClient
+     *            that will have its counterpart written in Python (boost::python)
      */
     class Client : public ExceptionDefinitions {
     public:
@@ -55,37 +55,37 @@ namespace multiplexer {
         typedef BasicClient::BasicScheduledMessageTracker
             BasicScheduledMessageTracker;
 
-	struct ScheduledMessageTracker {
-	    ScheduledMessageTracker(BasicScheduledMessageTracker basic_tracker)
-		: basic_tracker_(basic_tracker)
-	    {}
+        struct ScheduledMessageTracker {
+            ScheduledMessageTracker(BasicScheduledMessageTracker basic_tracker)
+                : basic_tracker_(basic_tracker)
+            {}
 
-	    inline operator bool () const { return (bool) basic_tracker_; }
-	    bool inline in_queue() const {
+            inline operator bool () const { return (bool) basic_tracker_; }
+            bool inline in_queue() const {
                 Assert(*this);
                 return (bool) boost::logic::indeterminate(*basic_tracker_);
             }
-	    bool inline is_sent() const {
+            bool inline is_sent() const {
                 Assert(*this);
                 return (bool) *basic_tracker_;
             }
-	    bool inline is_lost() const {
+            bool inline is_lost() const {
                 Assert(*this);
                 return (bool) !*basic_tracker_;
             }
-	private:
-	    BasicScheduledMessageTracker basic_tracker_;
-	};
+        private:
+            BasicScheduledMessageTracker basic_tracker_;
+        };
 
 
-	Client(boost::uint32_t client_type);
+        Client(boost::uint32_t client_type);
         Client(shared_ptr<boost::asio::io_service> io_service, boost::uint32_t
                 client_type);
-	Client(boost::asio::io_service& io_service, boost::uint32_t client_type);
-	~Client();
+        Client(boost::asio::io_service& io_service, boost::uint32_t client_type);
+        ~Client();
 
-	// connectivity
-	void shutdown() { return basic_client_->shutdown(); }
+        // connectivity
+        void shutdown() { return basic_client_->shutdown(); }
         ConnectionWrapper async_connect(const boost::asio::ip::tcp::endpoint&
                 peer_endpoint) {
             return basic_client_->async_connect(peer_endpoint);
@@ -96,16 +96,17 @@ namespace multiplexer {
         }
         ConnectionWrapper connect(const boost::asio::ip::tcp::endpoint& peer_endpoint,
                 float timeout=DEFAULT_TIMEOUT) {
+        	AZOUK_LOG(INFO, LOWVERBOSITY, MESSAGE("ON_SNAP_WTF_BBQ_3"));
             return basic_client_->connect(peer_endpoint, timeout);
         }
 
-	// IPv4 in nnn.nnn... form or IPv6 in hhh:hhh:... form
+        // IPv4 in nnn.nnn... form or IPv6 in hhh:hhh:... form
         ConnectionWrapper async_connect(const std::string& host, boost::uint16_t
                 port) {
-	    return async_connect(boost::asio::ip::tcp::endpoint(
+            return async_connect(boost::asio::ip::tcp::endpoint(
                         boost::asio::ip::address::from_string(host), port));
-	}
-	// IPv4 in nnn.nnn... form or IPv6 in hhh:hhh:... form
+        }
+        // IPv4 in nnn.nnn... form or IPv6 in hhh:hhh:... form
         ConnectionWrapper connect(const std::string& host, boost::uint16_t port,
                 float timeout=DEFAULT_TIMEOUT) {
             AZOUK_LOG(INFO, MEDIUMVERBOSITY, CTX("multiplexer.client")
@@ -113,88 +114,88 @@ namespace multiplexer {
             return connect(boost::asio::ip::tcp::endpoint(
                         boost::asio::ip::address::from_string(host), port),
                     timeout);
-	}
+        }
 
-	unsigned int inline connections_count() {
+        unsigned int inline connections_count() {
             return basic_client_->connections_count(true);
         }
-	boost::uint64_t inline instance_id() const {
+        boost::uint64_t inline instance_id() const {
             return basic_client_->instance_id();
         }
-	boost::uint32_t inline client_type() const {
+        boost::uint32_t inline client_type() const {
             return basic_client_->client_type();
         }
 
-	void set_multiplexer_password(
-		const std::string& multiplexer_password) {
-	    basic_client_->set_multiplexer_password(multiplexer_password);
-	}
+        void set_multiplexer_password(
+                const std::string& multiplexer_password) {
+            basic_client_->set_multiplexer_password(multiplexer_password);
+        }
 
-	inline const std::string& multiplexer_password() const {
-	    return basic_client_->multiplexer_password();
-	}
+        inline const std::string& multiplexer_password() const {
+            return basic_client_->multiplexer_password();
+        }
 
 
-	// incoming messages
+        // incoming messages
         BasicClient::IncomingMessagesBuffer::value_type read_raw_message(float
                 timeout=DEFAULT_READ_TIMEOUT) {
             std::auto_ptr<azlib::SimpleTimer> timer =
                 basic_client_->create_timer(timeout);
             return read_raw_message(*timer);
-	}
+        }
         BasicClient::IncomingMessagesBuffer::value_type read_raw_message(
                 azlib::SimpleTimer& timer) {
-	    basic_client_->wait_for_incoming_message(timer);
-	    Assert(basic_client_->has_incoming_messages());
-	    return basic_client_->next_incoming_message();
+            basic_client_->wait_for_incoming_message(timer);
+            Assert(basic_client_->has_incoming_messages());
+            return basic_client_->next_incoming_message();
         }
 
         std::pair<shared_ptr<MultiplexerMessage>, ConnectionWrapper>
                 receive_message(float timeout=DEFAULT_READ_TIMEOUT) {
 
-	    BasicClient::IncomingMessagesBuffer::value_type raw =
+            BasicClient::IncomingMessagesBuffer::value_type raw =
                 read_raw_message(timeout);
-	    return std::make_pair(raw.third, raw.second);
-	}
+            return std::make_pair(raw.third, raw.second);
+        }
 
-	template <typename T>
-	ScheduledMessageTracker schedule_one(const T& msg) {
+        template <typename T>
+        ScheduledMessageTracker schedule_one(const T& msg) {
             return ScheduledMessageTracker(
                     basic_client_->schedule_one(_serialize(msg)));
         }
 
-	template <typename T>
+        template <typename T>
         ScheduledMessageTracker schedule_one(const T& msg, ConnectionWrapper w,
                 float timeout=DEFAULT_TIMEOUT) {
-	    return ScheduledMessageTracker(
+            return ScheduledMessageTracker(
                     basic_client_->schedule_one(_serialize(msg), w, timeout));
-	}
+        }
 
         void flush(ScheduledMessageTracker tracker,
                 float timeout=DEFAULT_TIMEOUT) const {
 
-	    std::auto_ptr<azlib::SimpleTimer> timer =
+            std::auto_ptr<azlib::SimpleTimer> timer =
                 basic_client_->create_timer(timeout);
             return flush(tracker, *timer);
-	}
+        }
 
         void flush(ScheduledMessageTracker tracker,
                 azlib::SimpleTimer& timer) const {
 
-	    std::size_t n;
-	    while (tracker && tracker.in_queue() && !timer.expired()) {
-		n = io_service_.run_one();
-		Assert(n);
-	    }
+            std::size_t n;
+            while (tracker && tracker.in_queue() && !timer.expired()) {
+                n = io_service_.run_one();
+                Assert(n);
+            }
         }
 
-	void flush_all(float timeout=DEFAULT_TIMEOUT) const {
+        void flush_all(float timeout=DEFAULT_TIMEOUT) const {
 
-	    std::auto_ptr<azlib::SimpleTimer> timer =
+            std::auto_ptr<azlib::SimpleTimer> timer =
                 basic_client_->create_timer(timeout);
-	    std::size_t n;
+            std::size_t n;
 
-	    BasicClient::Connection::pointer conn;
+            BasicClient::Connection::pointer conn;
             std::list<BasicClient::Connection::weak_pointer>
                 current_connections;
             for (BasicClient::ConnectionById::const_iterator conni =
@@ -206,20 +207,20 @@ namespace multiplexer {
                 conni = current_connections.begin(),
                 connend = current_connections.end();
 
-	    while (!timer->expired() && conni != connend) {
+            while (!timer->expired() && conni != connend) {
 
-		// find a Connection that has some outgoing messages
-		while (conni != connend &&
+                // find a Connection that has some outgoing messages
+                while (conni != connend &&
                         (!(conn = conni->lock()) ||
                              conn->outgoing_queue_empty())
-			) {
-		    ++ conni;
-		}
+                	) {
+                    ++ conni;
+                }
 
-		n = io_service_.run_one();
-		Assert(n);
-	    }
-	}
+                n = io_service_.run_one();
+                Assert(n);
+            }
+        }
 
         /**
          * query
@@ -244,17 +245,17 @@ namespace multiplexer {
             return _query(mxmsg, timeout);
         }
 
-	template <typename T>
-	unsigned int schedule_all(T& msg) {
+        template <typename T>
+        unsigned int schedule_all(T& msg) {
             return basic_client_->schedule_all(_serialize(msg));
         }
 
-	template <typename T>
-	unsigned int schedule_all(const T& msg) {
+        template <typename T>
+        unsigned int schedule_all(const T& msg) {
             return basic_client_->schedule_all(_serialize(msg));
         }
 
-	azlib::Random64::result_type random64() const {
+        azlib::Random64::result_type random64() const {
             return basic_client_->random64();
         }
 
@@ -404,24 +405,24 @@ namespace multiplexer {
          */
         shared_ptr<const RawMessage> _serialize(
                 const MultiplexerMessage& msg) {
-	    return shared_ptr<const RawMessage>(
+            return shared_ptr<const RawMessage>(
                     RawMessage::FromMessage(msg));
-	}
-	shared_ptr<const RawMessage> _serialize(
+        }
+        shared_ptr<const RawMessage> _serialize(
                 std::string* serialized) {
-	    return shared_ptr<const RawMessage>(
+            return shared_ptr<const RawMessage>(
                     new RawMessage(serialized));
-	}
-	shared_ptr<const RawMessage> _serialize(
+        }
+        shared_ptr<const RawMessage> _serialize(
                 shared_ptr<const RawMessage> raw) {
             return raw;
         }
 
     private:
-	shared_ptr<boost::asio::io_service> io_service_ptr_;
+        shared_ptr<boost::asio::io_service> io_service_ptr_;
     protected:
-	boost::asio::io_service& io_service_;
-	shared_ptr<BasicClient> basic_client_;
+        boost::asio::io_service& io_service_;
+        shared_ptr<BasicClient> basic_client_;
     };
 
 

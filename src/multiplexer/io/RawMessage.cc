@@ -48,7 +48,7 @@ bool RawMessage::unpack_header() {
     decoder(length_);
     decoder(crc32_);
     if (length_ > MAX_MESSAGE_SIZE)
-	return false;
+        return false;
 
     // allocate memory for reading
     Assert(contents_.empty());
@@ -63,10 +63,10 @@ bool RawMessage::verify() {
     AssertMsg(!contents_.empty(), "You can't verify partial message.");
     const bool ok = Crc32(contents_) == crc32_;
     if (!ok) {
-	usability_ = NONE;
+        usability_ = NONE;
     } else {
-	usability_ = PRE_WRITING;
-	switch_to_writing();
+        usability_ = PRE_WRITING;
+        switch_to_writing();
     }
     return ok;
 }

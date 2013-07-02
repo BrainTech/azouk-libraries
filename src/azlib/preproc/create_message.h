@@ -25,10 +25,10 @@
 # /*
 #  * azlib/preproc/create_message.h
 #  *
-#  *	Macro definitions for defining messages inline.
+#  *        Macro definitions for defining messages inline.
 #  *
-#  *	Can be used from within other macros (see logging) or
-#  *	as a little dirty shorthand that saves typing the variable name in all lines.
+#  *        Can be used from within other macros (see logging) or
+#  *        as a little dirty shorthand that saves typing the variable name in all lines.
 #  */
 
 #include <boost/preprocessor/control/expr_if.hpp>
@@ -43,9 +43,9 @@
 #if 0
 # /*
 #  * AZOUK_CREATE_MESSAGE_NO_NAME(type, setters)
-#  *	Create an instance of type and runs the setters on it.
-#  *	Here for illustrative purposes as it's not very useful -- you don't
-#  *	control the name of the variable to which the new instance is bound.
+#  *        Create an instance of type and runs the setters on it.
+#  *        Here for illustrative purposes as it's not very useful -- you don't
+#  *        control the name of the variable to which the new instance is bound.
 #  */
 # define AZOUK_CREATE_MESSAGE_NO_NAME(type, assignments_seq) \
     AZOUK_CREATE_MESSAGE(type, BOOST_PP_SEQ_CAT( (__) (type) (__data__) (__LINE__) ), assignments_seq)
@@ -54,12 +54,12 @@
 
 # /*
 #  * AZOUK_CREATE_MESSAGE(type, msg, assignments_seq)
-#  *	Create an instance of type bound to the variable msg.
-#  *	Then run setters on it.
+#  *        Create an instance of type bound to the variable msg.
+#  *        Then run setters on it.
 #  *
-#  *	Examples:
-#  *	    AZOUK_CREATE_MESSAGE(MultiplexerMessage, mxmsg, (set_id(0)) (set_from(1)))
-#  *	    AZOUK_CREATE_MESSAGE(MultiplexerMessage, mxmsg, BOOST_PP_SEQ_NIL)
+#  *        Examples:
+#  *            AZOUK_CREATE_MESSAGE(MultiplexerMessage, mxmsg, (set_id(0)) (set_from(1)))
+#  *            AZOUK_CREATE_MESSAGE(MultiplexerMessage, mxmsg, BOOST_PP_SEQ_NIL)
 #  */
 #define AZOUK_CREATE_MESSAGE(type, msg, setters) \
     /* start AZOUK_CREATE_MESSAGE*/ \
@@ -69,16 +69,16 @@
 
 # /*
 #  * AZOUK_INTIALIZE_MESSAGE(msg, setters)
-#  *	Run all setters on msg.
+#  *        Run all setters on msg.
 #  */
 #define AZOUK_INTIALIZE_MESSAGE(msg, setters) \
     BOOST_PP_EXPR_IF( \
-	    BOOST_PP_GREATER(BOOST_PP_SEQ_SIZE(BOOST_PP_SEQ_PUSH_BACK(setters, ~)), 1), \
-	    /* do { BOOST_PP_SEQ_FOR_EACH(AZOUK_CREATE_MESSAGE__INVOKE_SETTER, msg, setters) } while (0) */ \
-	    do { BOOST_PP_FOR((AZOUK_CREATE_MESSAGE__INVOKE_SETTER, msg, setters (nil)), \
-		__AZOUK_INITIALIZE_MESSAGE_TUPLE_SIZE_GT_1, __AZOUK_INITIALIZE_MESSAGE_OP, \
-		__AZOUK_INITIALIZE_MESSAGE_EXPAND) } while (0) \
-	) \
+            BOOST_PP_GREATER(BOOST_PP_SEQ_SIZE(BOOST_PP_SEQ_PUSH_BACK(setters, ~)), 1), \
+            /* do { BOOST_PP_SEQ_FOR_EACH(AZOUK_CREATE_MESSAGE__INVOKE_SETTER, msg, setters) } while (0) */ \
+            do { BOOST_PP_FOR((AZOUK_CREATE_MESSAGE__INVOKE_SETTER, msg, setters (nil)), \
+                __AZOUK_INITIALIZE_MESSAGE_TUPLE_SIZE_GT_1, __AZOUK_INITIALIZE_MESSAGE_OP, \
+                __AZOUK_INITIALIZE_MESSAGE_EXPAND) } while (0) \
+        ) \
 
 # /*
 #  * This macro definitions are copied from boost/preprocessor/seq/for_each.hpp

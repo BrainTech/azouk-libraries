@@ -24,8 +24,8 @@ namespace mxcontrol {
 
     class Version : public Task {
     public:
-	virtual int run();
-	virtual std::string short_description() const { return "print version string"; }
+        virtual int run();
+        virtual std::string short_description() const { return "print version string"; }
     };
 };
 

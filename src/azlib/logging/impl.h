@@ -43,9 +43,9 @@
 
 # /*
 #  * AZOUK_SHOULD_LOG(level, verbosity, context)
-#  *	Checks if the current (level, verbosity) is logged from context.
-#  *	Use this and don't call azlib::logging::should_log directly,
-#  *	as context parameter may be not used.
+#  *        Checks if the current (level, verbosity) is logged from context.
+#  *        Use this and don't call azlib::logging::should_log directly,
+#  *        as context parameter may be not used.
 #  */
 #define AZOUK_SHOULD_LOG(level, verbosity, context) \
     (::azlib::logging::impl::should_log(level, verbosity))
@@ -53,15 +53,15 @@
 # /*
 #  * AZOUK_LOGGING_EMIT_LOG(level, verbosity, type, type_str, data_type_str,
 #  *        context, log_msg, data_msg)
-#  *	Emit log with parameters.
-#  *	Use this and don't call emit_log directly. Obviously.
+#  *        Emit log with parameters.
+#  *        Use this and don't call emit_log directly. Obviously.
 #  */
 #define AZOUK_LOGGING_EMIT_LOG(log_msg, data_msg, level, verbosity, log_flags) \
     (::azlib::logging::impl::emit_log(level, log_msg, data_msg, log_flags))
 
 # /*
 #  * AZOUK_LOGGING_CURRENT__FILE__
-#  *	Where the AZOUK_LOG originated from.
+#  *        Where the AZOUK_LOG originated from.
 #  */
 //#if defined(__BASE_FILE__)
 //# define AZOUK_LOGGING_CURRENT__FILE__() (__FILE__ ":" __BASE_FILE__)
@@ -71,24 +71,24 @@
 
 # /*
 #  * __AZOUK_LOG
-#  *	    AZOUK_LOG (implementation)
+#  *            AZOUK_LOG (implementation)
 #  */
 #define __AZOUK_LOG(log_msg, data_msg, contexttmp, level, verbosity, tokens) \
     /* start AZOUK_LOG */ \
     do { \
-	const ::azlib::logging::NoneType& data_msg = ::azlib::logging::None; \
+        const ::azlib::logging::NoneType& data_msg = ::azlib::logging::None; \
         /* Fool a compiler that `data_msg' is always used. */ \
-	::azlib::logging::impl::do_nothing(data_msg); \
-	bool __azouk_log_mustlog = false; \
-	__AZOUK_LOG_PROCESS_TOKENS_BEFORE_CHECK( \
-		(5, (log_msg, data_msg, contexttmp, level, verbosity)), \
-		tokens \
-	    ) \
-	if (__azouk_log_mustlog || \
+        ::azlib::logging::impl::do_nothing(data_msg); \
+        bool __azouk_log_mustlog = false; \
+        __AZOUK_LOG_PROCESS_TOKENS_BEFORE_CHECK( \
+                (5, (log_msg, data_msg, contexttmp, level, verbosity)), \
+                tokens \
+            ) \
+        if (__azouk_log_mustlog || \
                 ::azlib::logging::impl::should_log(level, verbosity)) { \
             __AZOUK_EMIT_LOG(log_msg, data_msg, contexttmp, level, verbosity, \
                     tokens); \
-	} \
+        } \
     } while (0) \
     // end AZOUK_LOG
 
@@ -149,7 +149,7 @@
             __azouk_log_call_context); \
     if (__azouk_log_call_should_log) { \
         /* TODO(findepi) */ \
-	const ::azlib::logging::NoneType& __azouk_log_call_data_msg  = \
+        const ::azlib::logging::NoneType& __azouk_log_call_data_msg  = \
             ::azlib::logging::None; \
         { \
             __AZOUK_EMIT_LOG(__azouk_log_call_log_msg, \
@@ -190,227 +190,227 @@
 namespace azlib {
     namespace logging {
 
-	struct NoneType {};
-	extern NoneType None;
+        struct NoneType {};
+        extern NoneType None;
 
-	namespace consts {
+        namespace consts {
 
-	    /*
-	     * defintions of levels
-	     *	    static const unsigned int DEBUG = ...;
-	     *
-	     * and specializations logging_level_name<L>
-	     *	    logging_level_name<DEBUG>::name() { return "DEBUG"; }
-	     */
+            /*
+             * defintions of levels
+             *            static const unsigned int DEBUG = ...;
+             *
+             * and specializations logging_level_name<L>
+             *            logging_level_name<DEBUG>::name() { return "DEBUG"; }
+             */
 #define AZOUK_define_logging_level(r, d, tup) \
-	    static const unsigned int BOOST_PP_TUPLE_ELEM(2, 0, tup) = \
+            static const unsigned int BOOST_PP_TUPLE_ELEM(2, 0, tup) = \
                 BOOST_PP_TUPLE_ELEM(2, 1, tup); \
-	    template<> struct logging_level_name< \
+            template<> struct logging_level_name< \
                         BOOST_PP_TUPLE_ELEM(2, 0, tup)> { \
-	        static inline const char* name() AZOUK_ATTRIBUTE_ALWAYS_INLINE \
+                static inline const char* name() AZOUK_ATTRIBUTE_ALWAYS_INLINE \
                 { return BOOST_PP_STRINGIZE(BOOST_PP_TUPLE_ELEM(2, 0, tup)); } \
             };
 
-	    BOOST_PP_SEQ_FOR_EACH(AZOUK_define_logging_level, ~,
+            BOOST_PP_SEQ_FOR_EACH(AZOUK_define_logging_level, ~,
                     AZOUK_LOGGING_LEVELS_SEQ);
 
 #undef AZOUK_define_logging_level
 
-	    /*
-	     * definition of logging_get_level_name
-	     */
-	    static inline const char* logging_get_level_name(
+            /*
+             * definition of logging_get_level_name
+             */
+            static inline const char* logging_get_level_name(
                     const unsigned int level) {
-		switch (level) {
-		    /* generate the switch:
-		     *	    case DEBUG: return "DEBUG";
-		     *	    ...
-		     */
+                switch (level) {
+                    /* generate the switch:
+                     *	    case DEBUG: return "DEBUG";
+                     *	    ...
+                     */
 #define AZOUK_get_logging_level_name(r, d, tup) \
-		    case BOOST_PP_TUPLE_ELEM(2, 0, tup): \
+                    case BOOST_PP_TUPLE_ELEM(2, 0, tup): \
                         return BOOST_PP_STRINGIZE( \
                                 BOOST_PP_TUPLE_ELEM(2, 0, tup));
-		    BOOST_PP_SEQ_FOR_EACH(AZOUK_get_logging_level_name, ~,
+                    BOOST_PP_SEQ_FOR_EACH(AZOUK_get_logging_level_name, ~,
                             AZOUK_LOGGING_LEVELS_SEQ)
 #undef AZOUK_get_logging_level_name
-		    default: return "UNKNOWN";
-		}
-	    }
+                    default: return "UNKNOWN";
+                }
+            }
 
-	    /*
-	     * defintions of verbosities
-	     *	    static const unsigned int LOWVERBOSITY = ...;
-	     *
-	     * and specializations logging_verbosity_name<L>
-	     *	    logging_verbosity_name<LOWVERBOSITY>::name()
-             *	    { return "LOWVERBOSITY"; }
-	     */
+            /*
+             * defintions of verbosities
+             *            static const unsigned int LOWVERBOSITY = ...;
+             *
+             * and specializations logging_verbosity_name<L>
+             *            logging_verbosity_name<LOWVERBOSITY>::name()
+             *            { return "LOWVERBOSITY"; }
+             */
 #define AZOUK_define_logging_verbosity(r, d, tup) \
-	    static const unsigned int BOOST_PP_TUPLE_ELEM(2, 0, tup) = \
+            static const unsigned int BOOST_PP_TUPLE_ELEM(2, 0, tup) = \
                 BOOST_PP_TUPLE_ELEM(2, 1, tup); \
-	    template<> struct logging_verbosity_name< \
+            template<> struct logging_verbosity_name< \
                     BOOST_PP_TUPLE_ELEM(2, 0, tup)> { \
-	        static inline const char* name() AZOUK_ATTRIBUTE_ALWAYS_INLINE \
+                static inline const char* name() AZOUK_ATTRIBUTE_ALWAYS_INLINE \
                 { return BOOST_PP_STRINGIZE(BOOST_PP_TUPLE_ELEM(2, 0, tup)); } \
             };
 
-	    BOOST_PP_SEQ_FOR_EACH(AZOUK_define_logging_verbosity, ~,
+            BOOST_PP_SEQ_FOR_EACH(AZOUK_define_logging_verbosity, ~,
                     AZOUK_LOGGING_VERBOSITIES_SEQ)
 #undef AZOUK_define_logging_verbosity
 
-	    /*
-	     * definition of logging_get_verbosity_name
-	     */
-	    static inline const char* logging_get_verbosity_name(
+            /*
+             * definition of logging_get_verbosity_name
+             */
+            static inline const char* logging_get_verbosity_name(
                     const unsigned int verbosity) {
-		switch (verbosity) {
-		    /* generate the switch:
-		     *	    case LOWVERBOSITY: return "LOWVERBOSITY";
-		     *	    ...
-		     */
+                switch (verbosity) {
+                    /* generate the switch:
+                     *	    case LOWVERBOSITY: return "LOWVERBOSITY";
+                     *	    ...
+                     */
 #define AZOUK_get_logging_verbosity_name(r, d, tup) \
-		    case BOOST_PP_TUPLE_ELEM(2, 0, tup): \
+                    case BOOST_PP_TUPLE_ELEM(2, 0, tup): \
                         return BOOST_PP_STRINGIZE( \
                                 BOOST_PP_TUPLE_ELEM(2, 0, tup));
-		    BOOST_PP_SEQ_FOR_EACH(AZOUK_get_logging_verbosity_name, ~,
+                    BOOST_PP_SEQ_FOR_EACH(AZOUK_get_logging_verbosity_name, ~,
                             AZOUK_LOGGING_VERBOSITIES_SEQ)
 #undef AZOUK_get_logging_verbosity_name
-		    default: return "UNKNOWN";
-		}
-	    }
+                    default: return "UNKNOWN";
+                }
+            }
 
-	}; // namespace consts
+        }; // namespace consts
 
-	namespace impl {
+        namespace impl {
 
-	    // flags
-	    static const unsigned int NO_FLAGS = 0;
-	    static const unsigned int SKIP_LOGGING_TO_STREAM = 1;
+            // flags
+            static const unsigned int NO_FLAGS = 0;
+            static const unsigned int SKIP_LOGGING_TO_STREAM = 1;
 
-	    /*
-	     * do_nothing
-             *	Function to fool compiler that a variable is used even if it's
-             *	not.
-	     */
-	    template <typename T>
-	    inline void do_nothing(const T&) {}
+            /*
+             * do_nothing
+             *        Function to fool compiler that a variable is used even if it's
+             *        not.
+             */
+            template <typename T>
+            inline void do_nothing(const T&) {}
 
-	    extern std::string process_context_;
-	    extern unsigned int maximal_logging_verbosity[];
+            extern std::string process_context_;
+            extern unsigned int maximal_logging_verbosity[];
 
 
-	    /*
-	     * current_timestamp()
-	     *	-> current timestamp as uint64_t
-	     */
-	    static inline boost::uint64_t current_timestamp()
+            /*
+             * current_timestamp()
+             *        -> current timestamp as uint64_t
+             */
+            static inline boost::uint64_t current_timestamp()
                 AZOUK_ATTRIBUTE_ALWAYS_INLINE;
-	    static inline boost::uint64_t current_timestamp() {
-		return time(NULL);
-	    }
+            static inline boost::uint64_t current_timestamp() {
+                return time(NULL);
+            }
 
-	    /*
-	     * should_log
-	     *	Invoked from AZOUK_SHOULD_LOG and __AZOUK_LOG.
-	     */
-	    inline bool should_log(unsigned int level, unsigned int verbosity)
+            /*
+             * should_log
+             *        Invoked from AZOUK_SHOULD_LOG and __AZOUK_LOG.
+             */
+            inline bool should_log(unsigned int level, unsigned int verbosity)
                 AZOUK_ATTRIBUTE_ALWAYS_INLINE;
-	    inline bool should_log(unsigned int level, unsigned int verbosity) {
-		DbgAssert(level <= MAX_LEVEL);
-		DbgAssert(verbosity <= MAX_VERBOSITY);
-		return impl::maximal_logging_verbosity[level] >= verbosity;
-	    }
+            inline bool should_log(unsigned int level, unsigned int verbosity) {
+                DbgAssert(level <= MAX_LEVEL);
+                DbgAssert(verbosity <= MAX_VERBOSITY);
+                return impl::maximal_logging_verbosity[level] >= verbosity;
+            }
 
 
-	    /*
-	     * _emit_log
-	     *	Emit log to logging stream (no cerr).
-	     */
-	    void _emit_log(const LogEntry& log_msg);
+            /*
+             * _emit_log
+             *        Emit log to logging stream (no cerr).
+             */
+            void _emit_log(const LogEntry& log_msg);
 
-	    /*
-	     * emit_log
-	     *  Write log_msg to cerr and logging stream.
-	     *	Invoked from AZOUK_LOGGING_EMIT_LOG.
-	     */
+            /*
+             * emit_log
+             *  Write log_msg to cerr and logging stream.
+             *        Invoked from AZOUK_LOGGING_EMIT_LOG.
+             */
 
             // shortcut for writing an (already initialized) LogEntry on cerr
             // and on binary logging stream
-	    static inline void emit_log(const unsigned int level,
+            static inline void emit_log(const unsigned int level,
                     const LogEntry& log_msg, unsigned int flags = 0) {
-		if (!(flags & SKIP_LOGGING_TO_STREAM))
-		    _emit_log(log_msg);
-		std::ostringstream cerr;
-		cerr
-		    << "[" << logging_get_level_name(level) << "]"
-		    << "  ts=" << log_msg.timestamp()
-		    << "  pid=" << log_msg.pid()
-		    << "  ctx=" << log_msg.context()
-		    << "  flw=\"" << log_msg.workflow() << "\""
-		    << "  txt=\"" << log_msg.text() << "\""
-		    ;
-		if (log_msg.has_source_file()) {
-		    cerr << "  from=" << log_msg.source_file();
-		    if (log_msg.has_source_line())
-			cerr << ":" << log_msg.source_line();
-		}
-		cerr << "\n";
-		std::cerr << cerr.str();
-	    }
+                if (!(flags & SKIP_LOGGING_TO_STREAM))
+                    _emit_log(log_msg);
+                std::ostringstream cerr;
+                cerr
+                    << "[" << logging_get_level_name(level) << "]"
+                    << "  ts=" << log_msg.timestamp()
+                    << "  pid=" << log_msg.pid()
+                    << "  ctx=" << log_msg.context()
+                    << "  flw=\"" << log_msg.workflow() << "\""
+                    << "  txt=\"" << log_msg.text() << "\""
+                    ;
+                if (log_msg.has_source_file()) {
+                    cerr << "  from=" << log_msg.source_file();
+                    if (log_msg.has_source_line())
+                	cerr << ":" << log_msg.source_line();
+                }
+                cerr << "\n";
+                std::cerr << cerr.str();
+            }
 
-	    // as the above but without level->str optimization
-	    static inline void emit_log(const LogEntry& log_msg,
+            // as the above but without level->str optimization
+            static inline void emit_log(const LogEntry& log_msg,
                     unsigned int flags = 0) {
-		return emit_log(log_msg.level(), log_msg, flags);
-	    }
+                return emit_log(log_msg.level(), log_msg, flags);
+            }
 
             // specialization for DataType being NoneType (AZOUK_LOG called
             // without DATA kwarg)
-	    inline void emit_log(const unsigned int level,
+            inline void emit_log(const unsigned int level,
                     const LogEntry& log_msg, const azlib::logging::NoneType&,
                     unsigned int flags = 0) {
-		return emit_log(level, log_msg, flags);
-	    }
+                return emit_log(level, log_msg, flags);
+            }
 
-	    // specialization for DataType being a ProtoBuf Message
-	    template <typename DataType>
-	    inline typename boost::enable_if_c<
+            // specialization for DataType being a ProtoBuf Message
+            template <typename DataType>
+            inline typename boost::enable_if_c<
                 boost::is_base_of<google::protobuf::Message, DataType>::value,
                 void>::type
-	    emit_log(const unsigned int level, LogEntry& log_msg,
+            emit_log(const unsigned int level, LogEntry& log_msg,
                     DataType& data_msg, unsigned int flags = 0) {
-		data_msg.SerializeToString(log_msg.mutable_data());
-		std::string text_format;
-		google::protobuf::TextFormat::PrintToString(data_msg,
+                data_msg.SerializeToString(log_msg.mutable_data());
+                std::string text_format;
+                google::protobuf::TextFormat::PrintToString(data_msg,
                         &text_format);
 
-		emit_log(level, log_msg, None, flags);
-		std::cerr
-		    << text_format << "\n"
-		    << "\n"
-		    ;
-	    }
+                emit_log(level, log_msg, None, flags);
+                std::cerr
+                    << text_format << "\n"
+                    << "\n"
+                    ;
+            }
 
             void set_process_name(const std::string name);
-	    void init_process_context_all_defaults();
+            void init_process_context_all_defaults();
 
-	}; // namespace impl
+        }; // namespace impl
 
-	static inline const std::string& process_context() {
-	    return impl::process_context_;
-	}
+        static inline const std::string& process_context() {
+            return impl::process_context_;
+        }
 
-	static inline void set_process_context(const std::string& s) {
-	    impl::process_context_ = s;
-	}
+        static inline void set_process_context(const std::string& s) {
+            impl::process_context_ = s;
+        }
 
-	static inline void init_process_context_all_defaults(){
-		impl::init_process_context_all_defaults();
-	}
+        static inline void init_process_context_all_defaults(){
+                impl::init_process_context_all_defaults();
+        }
 
-	static inline void set_process_name(const std::string name){
-		impl::set_process_name(name);
-	}
+        static inline void set_process_name(const std::string name){
+                impl::set_process_name(name);
+        }
 
     }; // namespace logging
 }; // namespace azlib
