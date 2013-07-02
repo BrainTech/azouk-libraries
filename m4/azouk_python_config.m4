@@ -47,12 +47,10 @@
 AC_DEFUN([AZOUK_PYTHON_CONFIG],
 [dnl
 AC_CHECK_PROGS([PYTHON_CONFIG], [${PYTHON}-config python-config])
-AS_IF(test -z "$PYTHON_CONFIG",
-      [AC_MSG_ERROR("python-config not found")])
 
-PYTHON_INCLUDES=`$PYTHON_CONFIG --includes`
+PYTHON_INCLUDES=""
 AC_SUBST(PYTHON_INCLUDES)
 
-PYTHON_LDFLAGS=`$PYTHON_CONFIG --ldflags`
+PYTHON_LDFLAGS="-lpython27 -lm -lbz2"
 AC_SUBST(PYTHON_LDFLAGS)
 ])dnl
