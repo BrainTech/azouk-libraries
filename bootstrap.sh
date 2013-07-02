@@ -2,6 +2,6 @@
 
 set -ex
 
-gnulib-tool --libtool --update
+/c/opt/gnulib/gnulib-tool --libtool --update --import gethostname setenv
 autoreconf -iv
 autoreconf -iv tools
