@@ -14,8 +14,7 @@ AM_CPPFLAGS = $(BOOST_CPPFLAGS) -I$(top_builddir)
 AM_CPPFLAGS += -I$(top_builddir)/lib -I$(top_srcdir)/lib
 
 GENERALFLAGS = -Wall -Wnon-virtual-dtor -Winit-self \
-               -Wswitch-enum -Wunused -Wunused-parameter \
-               -DBOOST_DISABLE_THREADS
+               -Wswitch-enum -Wunused -Wunused-parameter
 
 AM_CXXFLAGS = -O3 $(GENERALFLAGS)
 AM_CFLAGS = -O3 $(GENERALFLAGS)
