@@ -19,6 +19,13 @@ GENERALFLAGS = -Wall -Wnon-virtual-dtor -Winit-self \
 AM_CXXFLAGS = -O3 $(GENERALFLAGS)
 AM_CFLAGS = -O3 $(GENERALFLAGS)
 
+if PLATFORM_WIN32
+azouk__allinone_platform_LDFLAGS = -avoid-version -shared -shrext .pyd -version-info 1:0:0 -no-undefined
+else
+azouk__allinone_platform_LDFLAGS = ""
+endif
+
+
 boost_ldflags = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) \
                 $(BOOST_SIGNALS_LDFLAGS) \
                 $(BOOST_SYSTEM_LDFLAGS) \
@@ -119,7 +126,9 @@ libmultiplexer_la_SOURCES = \
 		    $(common_sources) \
                     $(multiplexer_sources)
 
-libmultiplexer_la_LIBADD = $(boost_libs)
+libmultiplexer_la_LIBADD = $(top_builddir)/lib/libgnu.la $(boost_libs)
+
+libmultiplexer_la_LDFLAGS = -shared -version-info 1:0:0 -no-undefined
 
 
 BUILT_SOURCES = azlib/logging/Logging.pb.cc azlib/logging/Logging.pb.h \
@@ -160,7 +169,7 @@ azouk__allinone_la_SOURCES = \
                 azouk/_loggingmodule.cc \
                 multiplexer/_mxclientmodule.cc
 
-azouk__allinone_la_LDFLAGS = -avoid-version -module $(BOOST_PYTHON_LDFLAGS)
+azouk__allinone_la_LDFLAGS = $(azouk__allinone_platform_LDFLAGS) -module $(BOOST_PYTHON_LDFLAGS)
 azouk__allinone_la_LIBADD = $(LDADD) $(BOOST_PYTHON_LIBS)
 azouk__allinone_la_CPPFLAGS = $(PYTHON_INCLUDES) $(AM_CPPFLAGS)
 

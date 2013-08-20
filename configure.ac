@@ -54,6 +54,14 @@ gl_INIT
 
 AC_LANG([C++])
 
+platform_win32=no
+case $host_os in
+  cygwin*|mingw*)
+    platform_win32=yes
+  ;;
+esac
+AM_CONDITIONAL(PLATFORM_WIN32, test "x$platform_win32" = "xyes")
+
 # boost libless headers
 BOOST_REQUIRE
 BOOST_ASIO
