@@ -1,3 +1,9 @@
+azouk-libraries (0.1.3-6) unstable; urgency=low
+
+  * Change source format to 3.0 (quilt).
+
+ -- Karol Auguštin <karol@augustin.pl>  Sun, 06 Oct 2013 12:23:21 +0200
+
 azouk-libraries (0.1.3-5) unstable; urgency=low
 
   * Added link to mxcontrol binary in openbci directory.
