@@ -5,7 +5,7 @@ AC_PREREQ([2.65])
 #
 AC_INIT([azouk-tools], [1.0.0], [who@where.com])
 AC_CONFIG_AUX_DIR([config])
-AM_INIT_AUTOMAKE(foreign dist-xz std-options -Wall -Werror -Wno-portability)
+AM_INIT_AUTOMAKE(foreign dist-xz std-options subdir-objects -Wall -Werror -Wno-portability)
 AM_SILENT_RULES([yes])
 
 AC_CONFIG_SRCDIR([generate_constants.cc])
