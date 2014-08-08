@@ -53,7 +53,7 @@ namespace azlib {
 	 */
 #define AZOUK_SIGNALS_declare(r, d, SIG) \
 	/* implement the extern from header file */ \
-	boost::signal<void()>* SIG = NULL;
+	boost::signals2::signal<void()>* SIG = NULL;
 	BOOST_PP_SEQ_FOR_EACH(AZOUK_SIGNALS_declare, ~,
                 AZOUK_SIGNALS_POSIX_SIGNALS_SEQ);
 	boost::signals2::signal<void(int)>* exit_signal = NULL;
@@ -130,7 +130,7 @@ namespace azlib {
                      * called in modules that can use them
 		     */
 #define AZOUK_SIGNALS_create_signal(r, d, SIG) signals::SIG = \
-                        new boost::signal<void()>();
+                        new boost::signals2::signal<void()>();
 		    BOOST_PP_SEQ_FOR_EACH(AZOUK_SIGNALS_create_signal, ~,
                             AZOUK_SIGNALS_POSIX_SIGNALS_SEQ);
 #undef AZOUK_SIGNALS_create_signal

@@ -21,7 +21,6 @@ AM_CXXFLAGS = -O3 $(GENERALFLAGS)
 AM_CFLAGS = -O3 $(GENERALFLAGS)
 
 boost_ldflags = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) \
-                $(BOOST_SIGNALS_LDFLAGS) \
                 $(BOOST_SYSTEM_LDFLAGS) \
                 $(BOOST_DATE_TIME_LDFLAGS) \
                 $(BOOST_FILESYSTEM_LDFLAGS)

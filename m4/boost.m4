@@ -737,15 +737,12 @@ BOOST_DEFUN([Serialization],
 ])# BOOST_SERIALIZATION
 
 
-# BOOST_SIGNALS([PREFERRED-RT-OPT])
+# BOOST_SIGNALS2()
 # ---------------------------------
-# Look for Boost.Signals.  For the documentation of PREFERRED-RT-OPT, see the
-# documentation of BOOST_FIND_LIB above.
-BOOST_DEFUN([Signals],
-[BOOST_FIND_LIB([signals], [$1],
-                [boost/signal.hpp],
-                [boost::signal<void ()> s;])
-])# BOOST_SIGNALS
+# Look for Boost.Signals2.
+BOOST_DEFUN([Signals2],
+[BOOST_FIND_HEADER([boost/signals2.hpp])
+])
 
 
 # BOOST_SMART_PTR()
