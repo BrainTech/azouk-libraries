@@ -26,7 +26,7 @@
 # error "generate_constants can't depend on signals.h"
 #endif
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/preprocessor/seq/for_each.hpp>
 #include <iostream> // force std::cerr initialization before
                     // _azouk_signals_initilizer
@@ -51,8 +51,8 @@ namespace azlib {
 	/*
 	 * list other process-level signals declared here
 	 */
-	extern boost::signal<void(int status)>* exit_signal;
-	static inline boost::signal<void(int)>& get_exit_signal() {
+	extern boost::signals2::signal<void(int status)>* exit_signal;
+	static inline boost::signals2::signal<void(int)>& get_exit_signal() {
             DbgAssert(module_is_initialized);
             return *exit_signal;
         }
