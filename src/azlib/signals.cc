@@ -53,10 +53,10 @@ namespace azlib {
 	 */
 #define AZOUK_SIGNALS_declare(r, d, SIG) \
 	/* implement the extern from header file */ \
-	boost::signal<void()>* SIG = NULL;
+	boost::signals2::signal<void()>* SIG = NULL;
 	BOOST_PP_SEQ_FOR_EACH(AZOUK_SIGNALS_declare, ~,
                 AZOUK_SIGNALS_POSIX_SIGNALS_SEQ);
-	boost::signal<void(int)>* exit_signal = NULL;
+	boost::signals2::signal<void(int)>* exit_signal = NULL;
 #undef AZOUK_SIGNALS_declare
 
 
@@ -122,7 +122,7 @@ namespace azlib {
 	    unsigned int _azouk_signals_initilizer::count = 0;
 	    _azouk_signals_initilizer::_azouk_signals_initilizer() {
 		namespace L = boost::lambda;
-		namespace S = boost::signals;
+		namespace S = boost::signals2;
 
 		if (count++ == 0) {
 		    /*
@@ -130,11 +130,11 @@ namespace azlib {
                      * called in modules that can use them
 		     */
 #define AZOUK_SIGNALS_create_signal(r, d, SIG) signals::SIG = \
-                        new boost::signal<void()>();
+                        new boost::signals2::signal<void()>();
 		    BOOST_PP_SEQ_FOR_EACH(AZOUK_SIGNALS_create_signal, ~,
                             AZOUK_SIGNALS_POSIX_SIGNALS_SEQ);
 #undef AZOUK_SIGNALS_create_signal
-		    signals::exit_signal = new boost::signal<void(int)>();
+		    signals::exit_signal = new boost::signals2::signal<void(int)>();
 
 		    exit_signal->connect(std::numeric_limits<int>::max(), &exit,
                             S::at_back);
