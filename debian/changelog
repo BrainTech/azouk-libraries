@@ -1,3 +1,9 @@
+azouk-libraries (0.1.6-1) unstable; urgency=medium
+
+  * Provide new multiplexer.rules file.
+
+ -- Karol Auguštin <karol@augustin.pl>  Sun, 10 Aug 2014 17:38:13 +0200
+
 azouk-libraries (0.1.5-1) unstable; urgency=medium
 
   * Provide new multiplexer.rules.
