@@ -1,0 +1,9 @@
+/files
+/*.debhelper.log
+/*.substvars
+/multiplexer-source/
+/openbci-*multiplexer*/
+/multiplexer-*.*.debhelper
+/openbci-*multiplexer*.*.debhelper
+/tmp/
+/build/

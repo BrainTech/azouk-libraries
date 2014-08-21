@@ -1,0 +1,11 @@
+aclocal.m4        /usr/share/multiplexer
+bootstrap.sh      /usr/share/multiplexer
+config/           /usr/share/multiplexer
+configure         /usr/share/multiplexer
+configure.ac      /usr/share/multiplexer
+lib/              /usr/share/multiplexer
+m4/               /usr/share/multiplexer
+Makefile.am       /usr/share/multiplexer
+Makefile.in       /usr/share/multiplexer
+src/              /usr/share/multiplexer
+tools/            /usr/share/multiplexer

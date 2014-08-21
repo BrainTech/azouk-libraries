@@ -1,0 +1,100 @@
+Source: azouk-libraries
+Section: net
+Priority: extra
+Maintainer: Karol Auguštin <karol@augustin.pl>
+Build-Depends: debhelper (>= 8.0.0),
+      gnulib,
+      autoconf,
+      automake,
+      libboost-dev,
+      libboost-date-time-dev,
+      libboost-filesystem-dev,
+      libboost-program-options-dev,
+      libboost-signals-dev,
+      libboost-system-dev,
+      libboost-python-dev,
+      python-dev, python,
+      protobuf-compiler (>= 2.4.1),
+      libprotobuf-dev (>= 2.4.1),
+      chrpath
+Standards-Version: 3.9.3
+Vcs-Git: git://git.braintech.pl/azouk-libraries.git
+Vcs-Browser: http://git.braintech.pl/azouk-libraries.git
+
+Package: openbci-multiplexer
+Architecture: amd64 i386
+Depends:
+      ${misc:Depends},
+      ${shlibs:Depends}
+Conflicts: openbci-core (<< 1.8.9-5)
+Description: multiplexer compiled for multiplexer.rules used with OpenBCI
+ Multiplexer is used to pass messages around.
+ .
+ Multiplexer binary depends on the multiplexer.rules file, which is
+ supposed to be modified by the user. This version is compiled for
+ a specific version of this file, used with OpenBCI.
+
+Package: openbci-libmultiplexer0
+Architecture: amd64 i386
+Depends:
+      ${misc:Depends},
+      ${shlibs:Depends}
+Description: multiplexer compiled for multiplexer.rules used with OpenBCI
+ Multiplexer is used to pass messages around. This package contains
+ the shared library used by multiplexer and it's clients.
+ .
+ Multiplexer library depends on the multiplexer.rules file, which is
+ supposed to be modified by the user. This version is compiled for
+ a specific version of this file, used with OpenBCI.
+
+Package: openbci-libmultiplexer-dev
+Architecture: amd64 i386
+Depends:
+      ${misc:Depends},
+      openbci-libmultiplexer0
+Description: multiplexer compiled for multiplexer.rules used with OpenBCI
+ Multiplexer is used to pass messages around. This package contains
+ the headers and static version of the library.
+ .
+ Multiplexer headers depend on the multiplexer.rules file, which is
+ supposed to be modified by the user. This version is compiled for
+ a specific version of this file, used with OpenBCI.
+
+Package: openbci-multiplexer-python
+Architecture: amd64 i386
+Depends:
+      ${misc:Depends},
+      ${shlibs:Depends},
+      ${python:Depends},
+      python-support (>= 0.90),
+      python-protobuf
+Description: multiplexer compiled for multiplexer.rules used with OpenBCI
+ Multiplexer is used to pass messages around. This package contains
+ python modules azouk, azlib, and multiplexer.
+ .
+ Multiplexer python files depend on the multiplexer.rules file, which is
+ supposed to be modified by the user. This version is compiled for
+ a specific version of this file, used with OpenBCI.
+
+Package: multiplexer-source
+Architecture: all
+Depends: ${misc:Depends},
+      build-essential,
+      automake,
+      libboost-dev,
+      libboost-date-time-dev,
+      libboost-filesystem-dev,
+      libboost-program-options-dev,
+      libboost-signals-dev,
+      libboost-system-dev,
+      libboost-python-dev,
+      python-dev, python,
+      protobuf-compiler (>= 2.4.1),
+      libprotobuf-dev (>= 2.4.1)
+Description: multiplexer sources ready for compilation
+ Multiplexer binary depends on the multiplexer.rules file, which is
+ supposed to be modified by the user. So multiplexer must be
+ distributed as sources.
+ .
+ Run /usr/share/multiplexer/configure --help to see available
+ options (RULES is the most important setting).

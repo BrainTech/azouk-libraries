@@ -1,0 +1,28 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	./bootstrap.sh
+	mkdir -p debian/build
+	cd debian/build && \
+	   ../../configure --prefix=/usr RULES=../../debian/obci_configs/multiplexer.rules
+
+override_dh_auto_build:
+	make -C debian/build
+
+override_dh_install:
+	make -C debian/build install DESTDIR=$(PWD)/debian/tmp
+	cd debian/tmp && chrpath --delete usr/bin/* usr/lib/*.so.* usr/lib/python*/dist-packages/azouk/_allinone.so
+	find debian/tmp \( -name *.pyc -o -name *.pyo \) -delete
+	dh_install
+	if [ -e debian/multiplexer-source ] ; then \
+	find debian/multiplexer-source -name .gitignore -print -delete , -name '*~' -print -delete ; \
+	fi
+
+
