@@ -1,3 +1,9 @@
+azouk-libraries (0.1.7-2) unstable; urgency=medium
+
+  * Rebuild due to dependencies change.
+
+ -- Karol Auguštin <karol@augustin.pl>  Tue, 30 Sep 2014 10:49:40 +0200
+
 azouk-libraries (0.1.7-1) unstable; urgency=medium
 
   * Provide new multiplexer.rules file.
