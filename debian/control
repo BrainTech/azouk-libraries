@@ -1,7 +1,7 @@
 Source: azouk-libraries
 Section: net
 Priority: extra
-Maintainer: Karol Auguštin <karol@augustin.pl>
+Maintainer: Alex Khrabrov <alex@mroja.net>
 Build-Depends: debhelper (>= 8.0.0),
       gnulib,
       autoconf,
@@ -18,8 +18,8 @@ Build-Depends: debhelper (>= 8.0.0),
       libprotobuf-dev (>= 2.4.1),
       chrpath
 Standards-Version: 3.9.3
-Vcs-Git: git://git.braintech.pl/azouk-libraries.git
-Vcs-Browser: http://git.braintech.pl/azouk-libraries.git
+Vcs-Git: https://github.com/BrainTech/azouk-libraries.git
+Vcs-Browser: https://github.com/BrainTech/azouk-libraries
 
 Package: openbci-multiplexer
 Architecture: amd64 i386
