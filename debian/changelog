@@ -1,3 +1,9 @@
+azouk-libraries (0.1.8-4) unstable; urgency=medium
+
+  * Change idle connection destroy time
+
+ -- Alex Khrabrov <alex@mroja.net>  Thu, 21 Jan 2015 15:53:00 +0100
+
 azouk-libraries (0.1.8-3) unstable; urgency=medium
 
   * New multiplexer rules
