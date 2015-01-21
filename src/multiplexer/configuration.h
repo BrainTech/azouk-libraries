@@ -31,7 +31,7 @@ namespace multiplexer {
     static const unsigned int MAX_MESSAGE_SIZE = 128 * 1024 * 1024;
 
     static const float HEARTBIT_INTERVAL = 3.0;
-    static const float NO_HEARTBIT_SO_PREPARE_DROP_INTERVAL = 5 * 60;
+    static const float NO_HEARTBIT_SO_PREPARE_DROP_INTERVAL = 240 * 60;
     static const float NO_HEARTBIT_SO_REALLY_DROP_INTERVAL = 10;
 
 }; // namespace multiplexer
