@@ -1,3 +1,9 @@
+azouk-libraries (0.1.8-5) unstable; urgency=medium
+
+  * New build
+
+ -- Alex Khrabrov <alex@mroja.net>  Sun, 09 Jan 2016 23:48:26 +0100
+
 azouk-libraries (0.1.8-4) unstable; urgency=medium
 
   * Change idle connection destroy time
