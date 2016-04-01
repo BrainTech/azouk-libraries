@@ -1,3 +1,9 @@
+azouk-libraries (0.1.9-1) unstable; urgency=medium
+
+  * Change mxcontrol symlink location
+
+ -- Alex Khrabrov <alex@mroja.net>  Fri, 01 Apr 2016 18:04:24 +0200
+
 azouk-libraries (0.1.8-5) unstable; urgency=medium
 
   * New build
