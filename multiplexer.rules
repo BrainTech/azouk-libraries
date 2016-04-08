@@ -405,6 +405,12 @@ peer {
 
 }
 
+peer {
+    type: 175
+    name: "HAPTICS_STIMULATOR"
+    queue_size: 32768
+
+}
 
 # packages and routing rules definitions
 #
@@ -960,6 +966,16 @@ type {
         peer: "ANALYSIS"
         whom: ALL
      }
+}
+
+type {
+    type: 160
+    name: "HAPTIC_CONTROL_MESSAGE"
+    to {
+       peer: "HAPTICS_STIMULATOR"
+       whom: ALL
+	report_delivery_error: false
+    }
 }
 
 type {
