@@ -1,4 +1,10 @@
-azouk-libraries (0.1.10-1) unstable; urgency=medium
+azouk-libraries (0.1.10-2) unstable; urgency=medium
+
+  * New multiplexer rules
+
+ -- Alex Khrabrov <alex@mroja.net>  Fri, 08 Apr 2016 22:33:06 +0200
+
+ azouk-libraries (0.1.10-1) unstable; urgency=medium
 
   * Do not block Python threads when waiting for multiplexer message
 
