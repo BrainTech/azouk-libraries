@@ -50,8 +50,15 @@ namespace multiplexer {
                             BasicClient::IncomingMessagesBuffer
                                 ::value_type::second_type,
                             ConnectionWrapper>::value));
-	    BasicClient::IncomingMessagesBuffer::value_type next =
-                Client::read_raw_message(timeout);
+
+	    BasicClient::IncomingMessagesBuffer::value_type next;
+
+	    Py_BEGIN_ALLOW_THREADS
+
+	    next = Client::read_raw_message(timeout);
+
+	    Py_END_ALLOW_THREADS
+
 	    py::tuple t = py::make_tuple((std::string)next.first->get_message(),
                     next.second);
 
