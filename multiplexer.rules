@@ -412,6 +412,7 @@ peer {
 
 }
 
+
 # packages and routing rules definitions
 #
 #   PACKAGES 1 - 99 reserved for Multiplexer meta packages
@@ -1023,6 +1024,11 @@ type {
 	whom: ALL
         report_delivery_error: false
 	}	
+    to {
+     	peer: "LOGIC_FEEDBACK"
+	whom: ALL
+        report_delivery_error: false
+	}	
 }
 
 type {
@@ -1241,7 +1247,6 @@ type {
 }
 
 
-
 type {
      type: 240
      name: "TOBII_SIGNAL_SAVER_FINISHED"
@@ -1367,5 +1372,11 @@ type {
 	report_delivery_error: false
 	}	
 }
-	
+
+
+
+
+
+
+
 	
