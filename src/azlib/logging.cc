@@ -19,7 +19,7 @@
 //      Piotr Findeisen <piotr.findeisen at gmail.com>
 //
 
-#include "config.h"
+//#include "config.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -45,9 +45,9 @@
 
 #include "logging.h"
 
-#ifndef HAVE_GETHOSTNAME
-#define gethostname gnulib::gethostname
-#endif
+//#ifndef HAVE_GETHOSTNAME
+//#define gethostname gnulib::gethostname
+//#endif
 
 namespace azlib {
     namespace logging {
