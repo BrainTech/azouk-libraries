@@ -20,4 +20,14 @@
 //
 
 #include "xrelease.h"
-#include "azouk/release.h" /* generated */
+
+namespace azouk { 
+
+namespace release {
+      const char* const version = "1.0.0";
+      //const char* const version_hash = "50d8b4a941c26b89482c94ab324b5a274f9ced66";
+      //const char* const version_short_hash = "50d8b4a";
+}
+
+} /* azouk */
+

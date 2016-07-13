@@ -146,12 +146,12 @@ add_executable(mxcontrol
   )
 target_link_libraries(mxcontrol ${LIBS})
 
-add_executable(server
-  src/server.cc
-  ${common_sources}
-  ${proto_generated_sources}
-  )
-target_link_libraries(server ${LIBS})
+#add_executable(server
+#  src/server.cc
+#  ${common_sources}
+#  ${proto_generated_sources}
+#  )
+#target_link_libraries(server ${LIBS})
 
 add_executable(generate_constants
   tools/generate_constants.cc
@@ -167,8 +167,8 @@ target_link_libraries(generate_constants ${LIBS})
 foreach (ext "h" "py")
   add_custom_command (
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/multiplexer/multiplexer.constants.${ext}
-    DEPENDS generate_constants src/multiplexer.rules
-    COMMAND generate_constants ${CMAKE_SOURCE_DIR}/src/multiplexer.rules
+    DEPENDS generate_constants multiplexer.rules
+    COMMAND generate_constants ${CMAKE_SOURCE_DIR}/multiplexer.rules
            ${CMAKE_CURRENT_BINARY_DIR}/multiplexer/multiplexer.constants.${ext}
     )
 endforeach ()
@@ -196,7 +196,7 @@ if (PYTHON)
   configure_file (
     src/logging.type_id.constants.txt
     azouk/logging/type_id_constants.py COPYONLY
-    )
+  )
 
   file (GLOB_RECURSE py_files RELATIVE "${CMAKE_SOURCE_DIR}/src/" "*.py")
   message ("py_files = ${py_files}")
@@ -204,20 +204,32 @@ if (PYTHON)
     configure_file (src/${py_file} ${py_file} COPYONLY)
   endforeach ()
 
-  add_library(multiplexer/_mxclient MODULE 
+  add_library(multiplexer/_allinone MODULE 
+    src/azouk/_allinonemodule.cc
+    src/azouk/_loggingmodule.cc
     src/multiplexer/_mxclientmodule.cc
     ${multiplexer_sources}
     ${common_sources}
     ${proto_generated_sources}
     )
-  target_link_libraries(multiplexer/_mxclient ${LIBS} ${PYTHON_LIBS})
-  set_target_properties(multiplexer/_mxclient PROPERTIES PREFIX "")
+  target_link_libraries(multiplexer/_allinone ${LIBS} ${PYTHON_LIBS})
+  set_target_properties(multiplexer/_allinone PROPERTIES PREFIX "")
 
-  add_library(azouk/_logging MODULE 
-    src/azouk/_loggingmodule.cc
-    ${common_sources}
-    ${proto_generated_sources}
-    )
-  target_link_libraries(azouk/_logging ${LIBS} ${PYTHON_LIBS})
-  set_target_properties(azouk/_logging PROPERTIES PREFIX "")
+  #add_library(multiplexer/_mxclient MODULE 
+  #  src/multiplexer/_mxclientmodule.cc
+  #  ${multiplexer_sources}
+  #  ${common_sources}
+  #  ${proto_generated_sources}
+  #  )
+  #target_link_libraries(multiplexer/_mxclient ${LIBS} ${PYTHON_LIBS})
+  #set_target_properties(multiplexer/_mxclient PROPERTIES PREFIX "")
+
+  #add_library(azouk/_logging MODULE 
+  #  src/azouk/_loggingmodule.cc
+  #  ${common_sources}
+  #  ${proto_generated_sources}
+  #  )
+  #target_link_libraries(azouk/_logging ${LIBS} ${PYTHON_LIBS})
+  #set_target_properties(azouk/_logging PROPERTIES PREFIX "")
 endif ()
+
